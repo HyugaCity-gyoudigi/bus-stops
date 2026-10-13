@@ -4,12 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <title>のるーと日向｜近くのバス停</title>
-
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
+  <title>のるーと日向｜バス停検索</title>
 
   <style>
     :root {
@@ -19,7 +14,7 @@
       --text: #1f2937;
       --muted: #667085;
       --border: #e5e7eb;
-      --bg: #f4f7f8;
+      --background: #f4f7f8;
       --card: #ffffff;
     }
 
@@ -27,14 +22,10 @@
       box-sizing: border-box;
     }
 
-    html {
-      scroll-behavior: smooth;
-    }
-
     body {
       margin: 0;
       color: var(--text);
-      background: var(--bg);
+      background: var(--background);
       font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -64,16 +55,23 @@
     }
 
     .site-header {
-      color: #fff;
+      color: #ffffff;
       background:
-        linear-gradient(135deg, rgba(0, 96, 84, 0.96), rgba(8, 127, 112, 0.9)),
-        radial-gradient(circle at top right, #42c7a7, transparent 45%);
+        linear-gradient(
+          135deg,
+          rgba(0, 96, 84, 0.98),
+          rgba(8, 127, 112, 0.92)
+        );
+    }
+
+    .header-inner,
+    .container {
+      width: min(1100px, calc(100% - 32px));
+      margin: 0 auto;
     }
 
     .header-inner {
-      width: min(1100px, calc(100% - 32px));
-      margin: 0 auto;
-      padding: 54px 0 48px;
+      padding: 48px 0;
     }
 
     .eyebrow {
@@ -86,7 +84,6 @@
 
     h1,
     h2,
-    h3,
     p {
       margin-top: 0;
     }
@@ -97,19 +94,23 @@
       line-height: 1.2;
     }
 
+    h2 {
+      margin-bottom: 8px;
+      font-size: 1.3rem;
+    }
+
     .lead {
-      max-width: 680px;
-      margin-bottom: 26px;
+      max-width: 720px;
+      margin-bottom: 24px;
       color: rgba(255, 255, 255, 0.9);
     }
 
     .container {
-      width: min(1100px, calc(100% - 32px));
-      margin: 0 auto;
       padding: 28px 0 60px;
     }
 
     .panel {
+      margin-bottom: 18px;
       padding: 24px;
       background: var(--card);
       border: 1px solid var(--border);
@@ -117,22 +118,70 @@
       box-shadow: 0 8px 24px rgba(16, 24, 40, 0.06);
     }
 
-    .panel h2 {
-      margin-bottom: 8px;
-      font-size: 1.3rem;
-    }
-
     .panel-description {
       margin-bottom: 18px;
       color: var(--muted);
-      font-size: 0.93rem;
+      font-size: 0.92rem;
     }
 
-    .content-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-      gap: 18px;
-      margin-bottom: 18px;
+    .primary-button,
+    .secondary-button,
+    .ghost-button,
+    .file-button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 44px;
+      padding: 10px 17px;
+      border-radius: 10px;
+      font-weight: 700;
+      text-decoration: none;
+      transition:
+        transform 0.15s ease,
+        background 0.15s ease;
+    }
+
+    .primary-button:hover,
+    .secondary-button:hover,
+    .ghost-button:hover,
+    .file-button:hover {
+      transform: translateY(-1px);
+    }
+
+    .primary-button {
+      color: #ffffff;
+      background: var(--accent);
+      border: 1px solid var(--accent);
+    }
+
+    .primary-button:hover {
+      background: #d97706;
+    }
+
+    .secondary-button {
+      color: #ffffff;
+      background: var(--primary);
+      border: 1px solid var(--primary);
+    }
+
+    .secondary-button:hover {
+      background: var(--primary-dark);
+    }
+
+    .ghost-button {
+      color: var(--primary-dark);
+      background: #ffffff;
+      border: 1px solid #a8d8cf;
+    }
+
+    .file-button {
+      color: #ffffff;
+      background: #475467;
+      border: 1px solid #475467;
+    }
+
+    .file-button input {
+      display: none;
     }
 
     .notice {
@@ -145,72 +194,46 @@
       font-size: 0.92rem;
     }
 
-    .primary-button,
-    .secondary-button,
-    .ghost-button,
-    .file-button {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-height: 46px;
-      padding: 10px 18px;
-      border-radius: 10px;
+    .search-form {
+      margin-bottom: 18px;
+    }
+
+    .search-label {
+      display: block;
+      margin-bottom: 8px;
       font-weight: 700;
-      text-decoration: none;
-      transition:
-        transform 0.15s ease,
-        box-shadow 0.15s ease,
-        background 0.15s ease;
     }
 
-    .primary-button:hover,
-    .secondary-button:hover,
-    .ghost-button:hover,
-    .file-button:hover {
-      transform: translateY(-1px);
+    .search-row {
+      display: flex;
+      gap: 10px;
     }
 
-    .primary-button {
-      color: #fff;
-      background: var(--accent);
-      border: 1px solid #f59e0b;
-      box-shadow: 0 5px 14px rgba(245, 158, 11, 0.28);
+    .search-row input {
+      flex: 1;
+      min-width: 0;
+      min-height: 46px;
+      padding: 10px 14px;
+      border: 1px solid #cbd5e1;
+      border-radius: 10px;
+      outline: none;
+      background: #ffffff;
     }
 
-    .primary-button:hover {
-      background: #d97706;
+    .search-row input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(8, 127, 112, 0.14);
     }
 
-    .secondary-button {
-      color: #fff;
-      background: var(--primary);
-      border: 1px solid var(--primary);
+    .status {
+      min-height: 26px;
+      margin: 12px 0 0;
+      color: var(--muted);
+      font-size: 0.9rem;
     }
 
-    .secondary-button:hover {
-      background: var(--primary-dark);
-    }
-
-    .ghost-button {
-      color: var(--primary-dark);
-      background: #fff;
-      border: 1px solid #a8d8cf;
-    }
-
-    .file-button {
-      color: #fff;
-      background: #475467;
-      border: 1px solid #475467;
-    }
-
-    .file-button input {
-      display: none;
-    }
-
-    .location-status,
-    .route-status {
-      min-height: 28px;
-      margin: 14px 0 0;
+    .result-summary {
+      margin: 0 0 12px;
       color: var(--muted);
       font-size: 0.9rem;
     }
@@ -220,30 +243,23 @@
       gap: 10px;
     }
 
-    .result-item {
+    .result-card {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
-      width: 100%;
-      padding: 14px;
-      text-align: left;
-      color: var(--text);
-      background: #fff;
+      gap: 16px;
+      padding: 15px;
       border: 1px solid var(--border);
       border-radius: 12px;
-      transition:
-        border-color 0.15s ease,
-        background 0.15s ease;
+      background: #ffffff;
     }
 
-    .result-item:hover,
-    .result-item.selected {
-      background: #f0fbf8;
+    .result-card:hover {
       border-color: var(--primary);
+      background: #f0fbf8;
     }
 
-    .result-main {
+    .result-info {
       min-width: 0;
     }
 
@@ -255,7 +271,7 @@
       white-space: nowrap;
     }
 
-    .result-sub {
+    .result-description {
       display: block;
       overflow: hidden;
       color: var(--muted);
@@ -264,12 +280,38 @@
       white-space: nowrap;
     }
 
-    .distance-badge {
-      flex: 0 0 auto;
+    .result-distance {
+      display: block;
+      margin-top: 3px;
       color: var(--primary-dark);
-      font-size: 0.9rem;
+      font-size: 0.84rem;
       font-weight: 700;
+    }
+
+    .result-actions {
+      display: flex;
+      flex: 0 0 auto;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .result-link {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 7px 11px;
+      color: var(--primary-dark);
+      border: 1px solid #a8d8cf;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-decoration: none;
       white-space: nowrap;
+    }
+
+    .result-link:hover {
+      background: #e6f6f2;
     }
 
     .empty-result {
@@ -281,35 +323,10 @@
       border-radius: 12px;
     }
 
-    #routeMap {
-      height: 410px;
-      margin-top: 16px;
-      overflow: hidden;
-      border-radius: 12px;
-      border: 1px solid var(--border);
-    }
-
-    .route-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 8px;
-    }
-
-    .map-note {
-      margin: 10px 0 0;
-      color: var(--muted);
-      font-size: 0.78rem;
-    }
-
-    .mymaps-panel {
-      margin-bottom: 18px;
-    }
-
     .mymaps-frame {
       display: block;
       width: 100%;
-      height: 480px;
+      height: 500px;
       border: 0;
       border-radius: 12px;
     }
@@ -328,31 +345,35 @@
     }
 
     .footer {
-      margin-top: 24px;
       color: var(--muted);
       font-size: 0.8rem;
       text-align: center;
     }
 
-    @media (max-width: 760px) {
+    @media (max-width: 720px) {
       .header-inner {
-        padding: 40px 0 36px;
-      }
-
-      .content-grid {
-        grid-template-columns: 1fr;
+        padding: 40px 0;
       }
 
       .panel {
         padding: 18px;
       }
 
-      #routeMap {
-        height: 360px;
+      .search-row {
+        flex-direction: column;
+      }
+
+      .result-card {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .result-actions {
+        justify-content: flex-start;
       }
 
       .mymaps-frame {
-        height: 390px;
+        height: 420px;
       }
     }
   </style>
@@ -362,26 +383,28 @@
   <header class="site-header">
     <div class="header-inner">
       <p class="eyebrow">のるーと日向</p>
-      <h1>近くのバス停を探す</h1>
+
+      <h1>バス停を探す</h1>
+
       <p class="lead">
-        現在地から近いバス停を探して、バス停までの徒歩ルートを確認できます。
+        バス停名称で検索したり、現在地から近いバス停を探したりできます。
       </p>
 
       <button
-        id="findButton"
+        id="nearbyButton"
         class="primary-button"
         type="button"
       >
-        現在地から近くのバス停を探す
+        現在地から近いバス停を探す
       </button>
 
       <p
         id="locationStatus"
-        class="location-status"
+        class="status"
         role="status"
         aria-live="polite"
       >
-        位置情報を利用するにはボタンを押してください。
+        現在地を使う場合はボタンを押してください。
       </p>
     </div>
   </header>
@@ -392,65 +415,68 @@
       class="notice"
       role="status"
       aria-live="polite"
-    ></div>
+    >
+      バス停データを読み込んでいます…
+    </div>
 
-    <section class="content-grid">
-      <article class="panel">
-        <h2>近くのバス停</h2>
-        <p class="panel-description">
-          現在地から直線距離が近い順に表示します。
-        </p>
+    <section class="panel">
+      <h2>バス停名称を検索</h2>
 
-        <div id="resultList" class="result-list">
-          <p class="empty-result">
-            「現在地から近くのバス停を探す」を押してください。
-          </p>
-        </div>
-      </article>
+      <p class="panel-description">
+        バス停名の一部を入力してください。現在地を取得済みの場合は近い順に表示されます。
+      </p>
 
-      <article class="panel">
-        <h2>バス停までの経路</h2>
-
-        <p
-          id="routeStatus"
-          class="route-status"
-          role="status"
-          aria-live="polite"
+      <form id="searchForm" class="search-form">
+        <label
+          class="search-label"
+          for="stopSearch"
         >
-          バス停を選択すると経路を表示します。
-        </p>
+          バス停名称
+        </label>
 
-        <div class="route-actions">
-          <a
-            id="googleDirections"
+        <div class="search-row">
+          <input
+            id="stopSearch"
+            type="search"
+            placeholder="例：市役所、駅、病院"
+            autocomplete="off"
+          />
+
+          <button
             class="secondary-button"
-            href="#"
-            target="_blank"
-            rel="noopener noreferrer"
-            hidden
+            type="submit"
           >
-            Google Mapsで徒歩経路を開く
-          </a>
+            検索
+          </button>
         </div>
+      </form>
 
-        <div id="routeMap"></div>
+      <p
+        id="resultSummary"
+        class="result-summary"
+        aria-live="polite"
+      ></p>
 
-        <p class="map-note">
-          ルート線はOpenStreetMapの徒歩ルーティングサービスを利用しています。
-          ルート線を取得できない場合は、Google Mapsのボタンを利用してください。
+      <div
+        id="resultList"
+        class="result-list"
+      >
+        <p class="empty-result">
+          バス停データを読み込んでください。
         </p>
-      </article>
+      </div>
     </section>
 
-    <section class="panel mymaps-panel">
-      <h2>のるーと日向のバス停マップ</h2>
+    <section class="panel">
+      <h2>のるーと日向 Google My Maps</h2>
+
       <p class="panel-description">
-        Google My Mapsに登録されているバス停を表示しています。
+        指定されたGoogle My Mapsを表示しています。
       </p>
 
       <iframe
         class="mymaps-frame"
-        src="https://www.google.com/maps/d/embed?mid=1owq7xfFyb0teNaf5EOLiKIsbEEfoclI&ehbc=2E312F"
+        src="https://www.google.com/maps/d/embed?mid=1lJz03os8OTk6Ucij1uqEVZpjakXGWc0&ehbc=2E312F"
         width="640"
         height="480"
         title="のるーと日向のバス停マップ"
@@ -460,10 +486,11 @@
     </section>
 
     <section class="panel">
-      <h2>バス停データの読み込み</h2>
+      <h2>バス停データ</h2>
+
       <p class="panel-description">
         Google My MapsからKMLまたはKMZをダウンロードして読み込めます。
-        一度読み込んだデータはこのブラウザに保存されます。
+        読み込んだデータはこのブラウザに保存されます。
       </p>
 
       <div class="import-row">
@@ -477,7 +504,7 @@
         </label>
 
         <button
-          id="clearStops"
+          id="clearButton"
           class="ghost-button"
           type="button"
         >
@@ -486,35 +513,38 @@
       </div>
 
       <p class="small-note">
-        自動読み込みを有効にする場合は、
-        <code>data/bus-stops.kml</code>としてKMLファイルを配置してください。
+        自動読み込みを使う場合は、
+        <code>data/bus-stops.kml</code>
+        にKMLファイルを配置してください。
       </p>
     </section>
 
     <p class="footer">
-      のるーと日向 バス停検索アプリ
+      のるーと日向 バス停検索
     </p>
   </main>
 
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
   <script>
     (() => {
       "use strict";
 
-      const MY_MAPS_ID =
-        "1owq7xfFyb0teNaf5EOLiKIsbEEfoclI";
+      const MAP_ID =
+        "1lJz03os8OTk6Ucij1uqEVZpjakXGWc0";
 
       const MY_MAPS_KML_URL =
         "https://www.google.com/maps/d/kml?mid=" +
-        encodeURIComponent(MY_MAPS_ID) +
+        encodeURIComponent(MAP_ID) +
         "&forcekml=1";
 
-      const STORAGE_KEY = "noruto-hyuga-bus-stops-v1";
+      const MY_MAPS_OPEN_URL =
+        "https://www.google.com/maps/d/edit?mid=" +
+        encodeURIComponent(MAP_ID) +
+        "&usp=sharing";
 
-      const FOOT_ROUTER_URL =
-        "https://routing.openstreetmap.de/routed-foot/route/v1/driving/";
+      const STORAGE_KEY =
+        "noruto-hyuga-stops-v2";
 
       /*
        * 座標を直接埋め込む場合は、ここに追加できます。
@@ -522,70 +552,51 @@
        * 例:
        * {
        *   name: "バス停名",
+       *   description: "",
        *   lat: 32.000000,
        *   lng: 131.000000
        * }
        */
       const INITIAL_STOPS = [];
 
-      const findButton = document.querySelector("#findButton");
-      const locationStatus = document.querySelector("#locationStatus");
-      const dataStatus = document.querySelector("#dataStatus");
-      const resultList = document.querySelector("#resultList");
-      const routeStatus = document.querySelector("#routeStatus");
-      const googleDirections = document.querySelector("#googleDirections");
-      const kmlFile = document.querySelector("#kmlFile");
-      const clearStopsButton = document.querySelector("#clearStops");
+      const nearbyButton =
+        document.querySelector("#nearbyButton");
 
-      let map;
-      let stopLayer;
-      let routeLayer;
-      let currentMarker;
-      let routeController = null;
-      let routeSerial = 0;
+      const locationStatus =
+        document.querySelector("#locationStatus");
+
+      const dataStatus =
+        document.querySelector("#dataStatus");
+
+      const searchForm =
+        document.querySelector("#searchForm");
+
+      const stopSearch =
+        document.querySelector("#stopSearch");
+
+      const resultSummary =
+        document.querySelector("#resultSummary");
+
+      const resultList =
+        document.querySelector("#resultList");
+
+      const kmlFile =
+        document.querySelector("#kmlFile");
+
+      const clearButton =
+        document.querySelector("#clearButton");
 
       let stops = [];
       let currentPosition = null;
-      let selectedStop = null;
-
-      function initializeMap() {
-        map = L.map("routeMap").setView([32.425, 131.62], 13);
-
-        L.tileLayer(
-          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-          {
-            maxZoom: 19,
-            attribution:
-              '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a>'
-          }
-        ).addTo(map);
-
-        stopLayer = L.layerGroup().addTo(map);
-        routeLayer = L.layerGroup().addTo(map);
-      }
-
-      function escapeHtml(value) {
-        const entities = {
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#039;"
-        };
-
-        return String(value ?? "").replace(
-          /[&<>"']/g,
-          (character) => entities[character]
-        );
-      }
 
       function stripHtml(value) {
-        const documentFragment = new DOMParser().parseFromString(
-          String(value ?? ""),
-          "text/html"
-        );
+        const documentObject =
+          new DOMParser().parseFromString(
+            String(value ?? ""),
+            "text/html"
+          );
 
-        return (documentFragment.body.textContent || "")
+        return (documentObject.body.textContent || "")
           .replace(/\s+/g, " ")
           .trim();
       }
@@ -605,13 +616,23 @@
       function distanceMeters(pointA, pointB) {
         const earthRadius = 6371000;
 
-        const lat1 = pointA.lat * Math.PI / 180;
-        const lat2 = pointB.lat * Math.PI / 180;
-        const deltaLat = (pointB.lat - pointA.lat) * Math.PI / 180;
-        const deltaLng = (pointB.lng - pointA.lng) * Math.PI / 180;
+        const lat1 =
+          pointA.lat * Math.PI / 180;
 
-        const sinLat = Math.sin(deltaLat / 2);
-        const sinLng = Math.sin(deltaLng / 2);
+        const lat2 =
+          pointB.lat * Math.PI / 180;
+
+        const deltaLat =
+          (pointB.lat - pointA.lat) * Math.PI / 180;
+
+        const deltaLng =
+          (pointB.lng - pointA.lng) * Math.PI / 180;
+
+        const sinLat =
+          Math.sin(deltaLat / 2);
+
+        const sinLng =
+          Math.sin(deltaLng / 2);
 
         const a =
           sinLat * sinLat +
@@ -620,7 +641,11 @@
             sinLng *
             sinLng;
 
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const c =
+          2 * Math.atan2(
+            Math.sqrt(a),
+            Math.sqrt(1 - a)
+          );
 
         return earthRadius * c;
       }
@@ -630,7 +655,10 @@
           return null;
         }
 
-        const lat = Number(item.lat ?? item.latitude);
+        const lat = Number(
+          item.lat ?? item.latitude
+        );
+
         const lng = Number(
           item.lng ??
           item.lon ??
@@ -648,14 +676,15 @@
           return null;
         }
 
-        const name =
-          stripHtml(item.name ?? item.title) ||
-          `バス停 ${index + 1}`;
-
         return {
-          name,
+          id: "",
+          name:
+            stripHtml(item.name ?? item.title) ||
+            `バス停 ${index + 1}`,
           description: stripHtml(
-            item.description ?? item.address ?? ""
+            item.description ??
+            item.address ??
+            ""
           ),
           lat,
           lng
@@ -664,7 +693,9 @@
 
       function setStops(rawStops, sourceName) {
         if (!Array.isArray(rawStops)) {
-          throw new Error("バス停データの形式が正しくありません。");
+          throw new Error(
+            "バス停データの形式が正しくありません。"
+          );
         }
 
         const uniqueStops = new Map();
@@ -688,11 +719,13 @@
         });
 
         if (uniqueStops.size === 0) {
-          throw new Error("バス停が見つかりませんでした。");
+          throw new Error(
+            "バス停が見つかりませんでした。"
+          );
         }
 
-        stops = Array.from(uniqueStops.values()).map(
-          (stop, index) => ({
+        stops = Array.from(uniqueStops.values())
+          .map((stop, index) => ({
             ...stop,
             id: [
               "stop",
@@ -700,8 +733,7 @@
               stop.lat.toFixed(6),
               stop.lng.toFixed(6)
             ].join("-")
-          })
-        );
+          }));
 
         try {
           localStorage.setItem(
@@ -709,361 +741,175 @@
             JSON.stringify(stops)
           );
         } catch (error) {
-          console.warn("バス停データを保存できませんでした。", error);
+          console.warn(
+            "バス停データを保存できませんでした。",
+            error
+          );
         }
-
-        renderStopMarkers();
 
         dataStatus.textContent =
           `${stops.length}件のバス停を読み込みました` +
           `（${sourceName}）。`;
+
+        renderResults();
       }
 
-      function renderStopMarkers() {
-        stopLayer.clearLayers();
+      function getSearchResults() {
+        const query =
+          stopSearch.value
+            .trim()
+            .toLocaleLowerCase("ja-JP");
 
-        stops.forEach((stop) => {
-          const popupContents =
-            `<strong>${escapeHtml(stop.name)}</strong>` +
-            (
-              stop.description
-                ? `<br><span>${escapeHtml(stop.description)}</span>`
-                : ""
-            );
-
-          const marker = L.circleMarker(
-            [stop.lat, stop.lng],
-            {
-              radius: 6,
-              color: "#087f70",
-              weight: 2,
-              fillColor: "#40b79f",
-              fillOpacity: 0.9
-            }
-          );
-
-          marker.bindPopup(popupContents);
-
-          marker.on("click", () => {
-            if (!currentPosition) {
-              locationStatus.textContent =
-                "先に「現在地から近くのバス停を探す」を押してください。";
-              return;
-            }
-
-            selectStop(stop);
-          });
-
-          marker.addTo(stopLayer);
-        });
-
-        if (stops.length > 0) {
-          const bounds = L.latLngBounds(
-            stops.map((stop) => [stop.lat, stop.lng])
-          );
-
-          if (bounds.isValid()) {
-            map.fitBounds(bounds, {
-              padding: [24, 24],
-              maxZoom: 14
-            });
+        const filtered = stops.filter((stop) => {
+          if (!query) {
+            return true;
           }
-        }
-      }
 
-      function rankStops(origin) {
-        return stops
-          .map((stop) => ({
-            stop,
-            distance: distanceMeters(origin, stop)
-          }))
-          .sort((a, b) => a.distance - b.distance);
-      }
+          const searchableText = [
+            stop.name,
+            stop.description
+          ]
+            .join(" ")
+            .toLocaleLowerCase("ja-JP");
 
-      function showEmptyResult(message) {
-        resultList.replaceChildren();
+          return searchableText.includes(query);
+        });
 
-        const paragraph = document.createElement("p");
-        paragraph.className = "empty-result";
-        paragraph.textContent = message;
-
-        resultList.appendChild(paragraph);
-      }
-
-      function renderResults(rankedStops) {
-        resultList.replaceChildren();
-
-        if (rankedStops.length === 0) {
-          showEmptyResult("表示できるバス停がありません。");
-          return;
+        if (currentPosition) {
+          filtered.sort((a, b) => {
+            return (
+              distanceMeters(currentPosition, a) -
+              distanceMeters(currentPosition, b)
+            );
+          });
+        } else {
+          filtered.sort((a, b) => {
+            return a.name.localeCompare(
+              b.name,
+              "ja"
+            );
+          });
         }
 
-        rankedStops.slice(0, 5).forEach((item, index) => {
-          const button = document.createElement("button");
-          button.type = "button";
-          button.className = "result-item";
-          button.dataset.stopId = item.stop.id;
-          button.setAttribute(
-            "aria-label",
-            `${item.stop.name}、${formatDistance(item.distance)}`
-          );
+        return filtered;
+      }
 
-          const main = document.createElement("span");
-          main.className = "result-main";
-
-          const name = document.createElement("span");
-          name.className = "result-name";
-          name.textContent = `${index + 1}. ${item.stop.name}`;
-
-          const sub = document.createElement("span");
-          sub.className = "result-sub";
-          sub.textContent =
-            item.stop.description || "バス停";
-
-          const distance = document.createElement("span");
-          distance.className = "distance-badge";
-          distance.textContent = formatDistance(item.distance);
-
-          main.appendChild(name);
-          main.appendChild(sub);
-
-          button.appendChild(main);
-          button.appendChild(distance);
-
-          button.addEventListener("click", () => {
-            selectStop(item.stop);
+      function createGoogleDirectionsUrl(stop) {
+        if (!currentPosition) {
+          const params = new URLSearchParams({
+            api: "1",
+            query: `${stop.lat},${stop.lng}`
           });
 
-          resultList.appendChild(button);
-        });
+          return `https://www.google.com/maps/search/?${params.toString()}`;
+        }
 
-        updateSelectedResult();
-      }
-
-      function updateSelectedResult() {
-        const resultButtons =
-          resultList.querySelectorAll(".result-item");
-
-        resultButtons.forEach((button) => {
-          button.classList.toggle(
-            "selected",
-            Boolean(
-              selectedStop &&
-              button.dataset.stopId === selectedStop.id
-            )
-          );
-        });
-      }
-
-      function createGoogleDirectionsUrl(origin, destination) {
         const params = new URLSearchParams({
           api: "1",
-          origin: `${origin.lat},${origin.lng}`,
-          destination:
-            `${destination.lat},${destination.lng}`,
+          origin:
+            `${currentPosition.lat},${currentPosition.lng}`,
+          destination: `${stop.lat},${stop.lng}`,
           travelmode: "walking"
         });
 
         return `https://www.google.com/maps/dir/?${params.toString()}`;
       }
 
-      function selectStop(stop) {
-        selectedStop = stop;
-        updateSelectedResult();
+      function renderResults() {
+        resultList.replaceChildren();
 
-        if (!currentPosition) {
-          routeStatus.textContent =
-            "現在地を取得すると徒歩ルートを表示できます。";
-          googleDirections.hidden = true;
+        if (stops.length === 0) {
+          resultSummary.textContent = "";
+
+          const empty = document.createElement("p");
+          empty.className = "empty-result";
+          empty.textContent =
+            "バス停データを読み込んでください。";
+
+          resultList.appendChild(empty);
           return;
         }
 
-        const directDistance = distanceMeters(
-          currentPosition,
-          stop
-        );
+        const results = getSearchResults();
 
-        googleDirections.href =
-          createGoogleDirectionsUrl(
-            currentPosition,
-            stop
-          );
+        resultSummary.textContent =
+          `${results.length}件のバス停が見つかりました。`;
 
-        googleDirections.hidden = false;
+        if (results.length === 0) {
+          const empty = document.createElement("p");
+          empty.className = "empty-result";
+          empty.textContent =
+            "該当するバス停がありません。";
 
-        routeStatus.textContent =
-          `${stop.name}までの徒歩ルートを取得中…` +
-          `（直線距離 ${formatDistance(directDistance)}）`;
-
-        drawRoute(stop);
-      }
-
-      async function drawRoute(stop) {
-        if (!currentPosition) {
+          resultList.appendChild(empty);
           return;
         }
 
-        const requestSerial = ++routeSerial;
+        results.slice(0, 100).forEach((stop) => {
+          const card = document.createElement("article");
+          card.className = "result-card";
 
-        if (routeController) {
-          routeController.abort();
-        }
+          const info = document.createElement("div");
+          info.className = "result-info";
 
-        routeLayer.clearLayers();
+          const name = document.createElement("span");
+          name.className = "result-name";
+          name.textContent = stop.name;
 
-        const start = [
-          currentPosition.lat,
-          currentPosition.lng
-        ];
+          const description =
+            document.createElement("span");
 
-        const end = [stop.lat, stop.lng];
+          description.className =
+            "result-description";
 
-        const directLine = L.polyline(
-          [start, end],
-          {
-            color: "#94a3b8",
-            weight: 3,
-            dashArray: "7 8",
-            opacity: 0.9
+          description.textContent =
+            stop.description || "バス停";
+
+          const distance =
+            document.createElement("span");
+
+          distance.className =
+            "result-distance";
+
+          if (currentPosition) {
+            distance.textContent =
+              `現在地から直線距離 ${formatDistance(
+                distanceMeters(currentPosition, stop)
+              )}`;
+          } else {
+            distance.textContent =
+              "現在地を取得すると距離を表示します";
           }
-        ).addTo(routeLayer);
 
-        const directBounds = L.latLngBounds([start, end]);
+          info.appendChild(name);
+          info.appendChild(description);
+          info.appendChild(distance);
 
-        map.fitBounds(directBounds, {
-          padding: [36, 36],
-          maxZoom: 16
+          const actions =
+            document.createElement("div");
+
+          actions.className = "result-actions";
+
+          const routeLink =
+            document.createElement("a");
+
+          routeLink.className = "result-link";
+          routeLink.target = "_blank";
+          routeLink.rel = "noopener noreferrer";
+          routeLink.href =
+            createGoogleDirectionsUrl(stop);
+
+          routeLink.textContent = currentPosition
+            ? "徒歩経路"
+            : "地図で表示";
+
+          actions.appendChild(routeLink);
+
+          card.appendChild(info);
+          card.appendChild(actions);
+
+          resultList.appendChild(card);
         });
-
-        const controller = new AbortController();
-        routeController = controller;
-
-        let timedOut = false;
-
-        const timeoutId = setTimeout(() => {
-          timedOut = true;
-          controller.abort();
-        }, 10000);
-
-        const url =
-          `${FOOT_ROUTER_URL}` +
-          `${currentPosition.lng},${currentPosition.lat};` +
-          `${stop.lng},${stop.lat}` +
-          "?overview=full&geometries=geojson&steps=false";
-
-        try {
-          const response = await fetch(url, {
-            signal: controller.signal
-          });
-
-          if (!response.ok) {
-            throw new Error("ルーティングサービスの応答エラー");
-          }
-
-          const data = await response.json();
-
-          if (requestSerial !== routeSerial) {
-            return;
-          }
-
-          if (
-            data.code !== "Ok" ||
-            !data.routes ||
-            !data.routes[0] ||
-            !data.routes[0].geometry
-          ) {
-            throw new Error("徒歩ルートが見つかりませんでした。");
-          }
-
-          routeLayer.clearLayers();
-
-          const route = data.routes[0];
-
-          const routeLine = L.geoJSON(
-            route.geometry,
-            {
-              style: {
-                color: "#087f70",
-                weight: 6,
-                opacity: 0.9
-              }
-            }
-          ).addTo(routeLayer);
-
-          const routeBounds = routeLine.getBounds();
-          routeBounds.extend(start);
-          routeBounds.extend(end);
-
-          map.fitBounds(routeBounds, {
-            padding: [36, 36],
-            maxZoom: 17
-          });
-
-          const durationMinutes = Math.max(
-            1,
-            Math.round(route.duration / 60)
-          );
-
-          routeStatus.textContent =
-            `${stop.name}までの徒歩ルート：` +
-            `約${formatDistance(route.distance)}、` +
-            `約${durationMinutes}分`;
-        } catch (error) {
-          if (
-            error.name === "AbortError" &&
-            requestSerial !== routeSerial
-          ) {
-            return;
-          }
-
-          if (requestSerial !== routeSerial) {
-            return;
-          }
-
-          routeStatus.textContent =
-            `${stop.name}までのルート線を取得できませんでした。` +
-            "破線は直線距離です。Google Mapsで確認してください。";
-
-          directLine.bringToFront();
-        } finally {
-          clearTimeout(timeoutId);
-
-          if (routeController === controller) {
-            routeController = null;
-          }
-
-          if (timedOut) {
-            console.info("ルート取得がタイムアウトしました。");
-          }
-        }
-      }
-
-      function showCurrentPosition(position) {
-        const { latitude, longitude } = position.coords;
-
-        currentPosition = {
-          lat: latitude,
-          lng: longitude
-        };
-
-        if (currentMarker) {
-          currentMarker.remove();
-        }
-
-        currentMarker = L.circleMarker(
-          [latitude, longitude],
-          {
-            radius: 9,
-            color: "#b42318",
-            weight: 3,
-            fillColor: "#f04438",
-            fillOpacity: 0.95
-          }
-        )
-          .bindPopup("現在地")
-          .addTo(map);
-
-        map.setView([latitude, longitude], 15);
       }
 
       function findNearbyStops() {
@@ -1079,48 +925,52 @@
           return;
         }
 
-        findButton.disabled = true;
-        findButton.textContent = "現在地を取得中…";
+        nearbyButton.disabled = true;
+        nearbyButton.textContent =
+          "現在地を取得中…";
+
         locationStatus.textContent =
           "位置情報の利用を許可してください。";
 
         navigator.geolocation.getCurrentPosition(
           (position) => {
-            findButton.disabled = false;
-            findButton.textContent =
-              "現在地から近くのバス停を探す";
+            currentPosition = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude
+            };
 
-            showCurrentPosition(position);
+            nearbyButton.disabled = false;
+            nearbyButton.textContent =
+              "現在地から近いバス停を探す";
 
-            const ranked = rankStops(currentPosition);
+            stopSearch.value = "";
 
-            renderResults(ranked);
-
-            const accuracy = Number(
-              position.coords.accuracy
-            );
+            const accuracy =
+              Number(position.coords.accuracy);
 
             locationStatus.textContent =
               Number.isFinite(accuracy)
-                ? `現在地を取得しました（精度 約${Math.round(accuracy)}m）。`
+                ? `現在地を取得しました（精度 約${Math.round(
+                    accuracy
+                  )}m）。`
                 : "現在地を取得しました。";
 
-            selectStop(ranked[0].stop);
+            renderResults();
           },
           (error) => {
-            findButton.disabled = false;
-            findButton.textContent =
-              "現在地から近くのバス停を探す";
+            nearbyButton.disabled = false;
+            nearbyButton.textContent =
+              "現在地から近いバス停を探す";
 
             if (error.code === 1) {
               locationStatus.textContent =
                 "位置情報の利用が許可されませんでした。ブラウザの設定を確認してください。";
             } else if (error.code === 2) {
               locationStatus.textContent =
-                "現在地を取得できませんでした。電波状況などを確認してください。";
+                "現在地を取得できませんでした。";
             } else if (error.code === 3) {
               locationStatus.textContent =
-                "現在地の取得がタイムアウトしました。もう一度お試しください。";
+                "現在地の取得がタイムアウトしました。";
             } else {
               locationStatus.textContent =
                 "現在地を取得できませんでした。";
@@ -1134,30 +984,32 @@
         );
       }
 
-      function getElementsByLocalName(node, localName) {
+      function getElementsByLocalName(node, name) {
         const namespaced =
           typeof node.getElementsByTagNameNS === "function"
             ? Array.from(
-                node.getElementsByTagNameNS(
-                  "*",
-                  localName
-                )
+                node.getElementsByTagNameNS("*", name)
               )
             : [];
 
         const plain =
           typeof node.getElementsByTagName === "function"
             ? Array.from(
-                node.getElementsByTagName(localName)
+                node.getElementsByTagName(name)
               )
             : [];
 
-        return [...new Set([...namespaced, ...plain])];
+        return [
+          ...new Set([
+            ...namespaced,
+            ...plain
+          ])
+        ];
       }
 
-      function firstText(node, localName) {
+      function getFirstText(node, name) {
         const element =
-          getElementsByLocalName(node, localName)[0];
+          getElementsByLocalName(node, name)[0];
 
         return element
           ? element.textContent.trim()
@@ -1171,14 +1023,22 @@
         );
 
         const parserErrors =
-          getElementsByLocalName(xml, "parsererror");
+          getElementsByLocalName(
+            xml,
+            "parsererror"
+          );
 
         if (parserErrors.length > 0) {
-          throw new Error("KMLの解析に失敗しました。");
+          throw new Error(
+            "KMLの解析に失敗しました。"
+          );
         }
 
         const placemarks =
-          getElementsByLocalName(xml, "Placemark");
+          getElementsByLocalName(
+            xml,
+            "Placemark"
+          );
 
         const parsedStops = [];
 
@@ -1189,20 +1049,20 @@
               "Point"
             )[0];
 
-          let coordinateText = "";
-
-          if (point) {
-            coordinateText = firstText(
-              point,
-              "coordinates"
-            );
+          if (!point) {
+            return;
           }
 
-          if (!coordinateText) {
-            coordinateText = firstText(
-              placemark,
-              "coordinates"
+          const coordinateText =
+            getFirstText(point, "coordinates");
+
+          const match =
+            coordinateText.match(
+              /(-?(?:\d+(?:\.\d+)?|\.\d+))\s*,\s*(-?(?:\d+(?:\.\d+)?|\.\d+))/
             );
+
+          if (!match) {
+            return;
           }
 
           /*
@@ -1210,18 +1070,8 @@
            * longitude,latitude,altitude
            * の順番です。
            */
-          const coordinateMatch = String(
-            coordinateText
-          ).match(
-            /(-?(?:\d+(?:\.\d+)?|\.\d+))\s*,\s*(-?(?:\d+(?:\.\d+)?|\.\d+))/
-          );
-
-          if (!coordinateMatch) {
-            return;
-          }
-
-          const lng = Number(coordinateMatch[1]);
-          const lat = Number(coordinateMatch[2]);
+          const lng = Number(match[1]);
+          const lat = Number(match[2]);
 
           if (
             !Number.isFinite(lat) ||
@@ -1232,10 +1082,13 @@
 
           parsedStops.push({
             name:
-              firstText(placemark, "name") ||
+              getFirstText(placemark, "name") ||
               `バス停 ${index + 1}`,
             description: stripHtml(
-              firstText(placemark, "description")
+              getFirstText(
+                placemark,
+                "description"
+              )
             ),
             lat,
             lng
@@ -1244,7 +1097,7 @@
 
         if (parsedStops.length === 0) {
           throw new Error(
-            "KML内にポイント形式のバス停が見つかりませんでした。"
+            "KML内にポイント形式のバス停がありません。"
           );
         }
 
@@ -1267,10 +1120,51 @@
         );
       }
 
-      async function fetchText(url, timeout = 6000) {
-        const controller = new AbortController();
+      async function readKmlOrKmz(file) {
+        const fileName =
+          file.name.toLowerCase();
 
-        const timeoutId = setTimeout(() => {
+        if (!fileName.endsWith(".kmz")) {
+          return await file.text();
+        }
+
+        if (!window.JSZip) {
+          throw new Error(
+            "KMZを解凍できませんでした。"
+          );
+        }
+
+        const zip =
+          await window.JSZip.loadAsync(file);
+
+        let entry = zip.file("doc.kml");
+
+        if (!entry) {
+          const kmlName =
+            Object.keys(zip.files).find(
+              (name) =>
+                name.toLowerCase().endsWith(".kml")
+            );
+
+          if (kmlName) {
+            entry = zip.file(kmlName);
+          }
+        }
+
+        if (!entry) {
+          throw new Error(
+            "KMZ内にKMLファイルがありません。"
+          );
+        }
+
+        return await entry.async("text");
+      }
+
+      async function fetchText(url, timeout = 6000) {
+        const controller =
+          new AbortController();
+
+        const timer = setTimeout(() => {
           controller.abort();
         }, timeout);
 
@@ -1288,15 +1182,14 @@
 
           return await response.text();
         } finally {
-          clearTimeout(timeoutId);
+          clearTimeout(timer);
         }
       }
 
       function getSavedStops() {
         try {
-          const value = localStorage.getItem(
-            STORAGE_KEY
-          );
+          const value =
+            localStorage.getItem(STORAGE_KEY);
 
           if (!value) {
             return null;
@@ -1304,7 +1197,8 @@
 
           const parsed = JSON.parse(value);
 
-          return Array.isArray(parsed) && parsed.length
+          return Array.isArray(parsed) &&
+            parsed.length > 0
             ? parsed
             : null;
         } catch (error) {
@@ -1313,28 +1207,11 @@
       }
 
       async function initializeStops() {
-        dataStatus.textContent =
-          "バス停データを確認しています…";
-
-        const savedStops = getSavedStops();
-
-        if (savedStops) {
-          try {
-            setStops(
-              savedStops,
-              "このブラウザに保存されたデータ"
-            );
-            return;
-          } catch (error) {
-            console.warn(error);
-          }
-        }
-
         if (INITIAL_STOPS.length > 0) {
           try {
             setStops(
               INITIAL_STOPS,
-              "アプリに埋め込まれたデータ"
+              "アプリ内データ"
             );
             return;
           } catch (error) {
@@ -1343,9 +1220,7 @@
         }
 
         /*
-         * まずは同じサイト内の静的ファイルを探します。
-         * data/bus-stops.kmlを配置すれば、フロントエンドだけで
-         * 自動的に読み込めます。
+         * 同じサイト内にKMLを配置している場合。
          */
         const localSources = [
           {
@@ -1362,28 +1237,29 @@
 
         for (const source of localSources) {
           try {
-            const text = await fetchText(source.url);
-            const rawStops = source.parser(text);
+            const text =
+              await fetchText(source.url);
+
+            const rawStops =
+              source.parser(text);
 
             setStops(rawStops, source.label);
             return;
           } catch (error) {
-            // ファイルがない場合は次の候補へ進みます。
+            // 次の候補を試します。
           }
         }
 
         /*
-         * Google My MapsのKML URLも試します。
-         * Google側のCORS設定によってはブラウザから取得できないため、
-         * 確実に動作させるにはdata/bus-stops.kmlを配置してください。
+         * Google My MapsのKML URLを試します。
+         * Google側のCORS設定によっては取得できません。
          */
         try {
-          const kmlText = await fetchText(
-            MY_MAPS_KML_URL,
-            6000
-          );
+          const text =
+            await fetchText(MY_MAPS_KML_URL);
 
-          const rawStops = parseKml(kmlText);
+          const rawStops =
+            parseKml(text);
 
           setStops(
             rawStops,
@@ -1392,115 +1268,104 @@
 
           return;
         } catch (error) {
-          // CORSなどで取得できない場合は画面から読み込みます。
+          // 下記の保存データを確認します。
         }
 
-        dataStatus.textContent =
-          "バス停データが見つかりません。Google My MapsからKML/KMZをダウンロードして読み込んでください。";
-      }
+        const savedStops = getSavedStops();
 
-      async function readKmlOrKmz(file) {
-        const lowerName = file.name.toLowerCase();
-
-        if (!lowerName.endsWith(".kmz")) {
-          return await file.text();
-        }
-
-        if (!window.JSZip) {
-          throw new Error(
-            "KMZを解凍するライブラリを読み込めませんでした。"
-          );
-        }
-
-        const zip = await window.JSZip.loadAsync(file);
-
-        let entry = zip.file("doc.kml");
-
-        if (!entry) {
-          const kmlFileName = Object.keys(zip.files).find(
-            (name) => name.toLowerCase().endsWith(".kml")
-          );
-
-          if (kmlFileName) {
-            entry = zip.file(kmlFileName);
+        if (savedStops) {
+          try {
+            setStops(
+              savedStops,
+              "このブラウザに保存されたデータ"
+            );
+            return;
+          } catch (error) {
+            console.warn(error);
           }
         }
 
-        if (!entry) {
-          throw new Error(
-            "KMZ内にKMLファイルがありません。"
-          );
-        }
-
-        return await entry.async("text");
+        dataStatus.textContent =
+          "バス停データがありません。Google My MapsからKML/KMZをダウンロードして読み込んでください。";
       }
 
-      kmlFile.addEventListener("change", async (event) => {
-        const file = event.target.files?.[0];
-
-        if (!file) {
-          return;
+      searchForm.addEventListener(
+        "submit",
+        (event) => {
+          event.preventDefault();
+          renderResults();
         }
+      );
 
-        dataStatus.textContent =
-          `${file.name}を読み込んでいます…`;
-
-        try {
-          const kmlText = await readKmlOrKmz(file);
-          const rawStops = parseKml(kmlText);
-
-          setStops(
-            rawStops,
-            `ファイル：${file.name}`
-          );
-        } catch (error) {
-          console.error(error);
-
-          dataStatus.textContent =
-            "KML/KMZを読み込めませんでした。バス停がポイント形式で登録されているか確認してください。";
-        } finally {
-          event.target.value = "";
+      stopSearch.addEventListener(
+        "input",
+        () => {
+          renderResults();
         }
-      });
+      );
 
-      clearStopsButton.addEventListener("click", () => {
-        try {
-          localStorage.removeItem(STORAGE_KEY);
-        } catch (error) {
-          console.warn(error);
-        }
-
-        if (routeController) {
-          routeController.abort();
-        }
-
-        routeSerial += 1;
-        stops = [];
-        selectedStop = null;
-
-        stopLayer.clearLayers();
-        routeLayer.clearLayers();
-
-        googleDirections.hidden = true;
-        googleDirections.removeAttribute("href");
-
-        routeStatus.textContent =
-          "バス停を選択すると経路を表示します。";
-
-        showEmptyResult(
-          "「現在地から近くのバス停を探す」を押してください。"
-        );
-
-        dataStatus.textContent =
-          "保存されていたバス停データを削除しました。";
-      });
-
-      findButton.addEventListener(
+      nearbyButton.addEventListener(
         "click",
         findNearbyStops
       );
 
-      initializeMap();
+      kmlFile.addEventListener(
+        "change",
+        async (event) => {
+          const file =
+            event.target.files?.[0];
+
+          if (!file) {
+            return;
+          }
+
+          dataStatus.textContent =
+            `${file.name}を読み込んでいます…`;
+
+          try {
+            const kmlText =
+              await readKmlOrKmz(file);
+
+            const rawStops =
+              parseKml(kmlText);
+
+            setStops(
+              rawStops,
+              `ファイル：${file.name}`
+            );
+          } catch (error) {
+            console.error(error);
+
+            dataStatus.textContent =
+              "KML/KMZを読み込めませんでした。バス停がポイント形式で登録されているか確認してください。";
+          } finally {
+            event.target.value = "";
+          }
+        }
+      );
+
+      clearButton.addEventListener(
+        "click",
+        () => {
+          localStorage.removeItem(
+            STORAGE_KEY
+          );
+
+          stops = [];
+          renderResults();
+
+          dataStatus.textContent =
+            "保存されていたバス停データを削除しました。";
+        }
+      );
+
+      /*
+       * 共有URLを別タブで開くリンクを必要に応じて追加できます。
+       *
+       * window.open(MY_MAPS_OPEN_URL, "_blank");
+       */
+
+      renderResults();
       initializeStops();
     })();
   </script>
