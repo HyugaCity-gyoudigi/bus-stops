@@ -646,11 +646,12 @@
       <article class="panel">
         <h2>検索結果</h2>
 
-        <p
+       <p
           id="resultSummary"
           class="result-summary"
           aria-live="polite"
         ></p>
+
 
         <div
           id="resultList"
@@ -683,7 +684,7 @@
           role="status"
           aria-live="polite"
         >
-          バス停を選択すると、Leaflet上に経路を表示します。
+          バス停を選択すると、地図上に経路を表示します。
         </p>
 
         <div class="route-actions">
@@ -701,9 +702,7 @@
 
         <div id="routeMap"></div>
 
-        <p class="map-note">
-          青色のマーカーはのるーと日向、黄色のマーカーは南部ぷらっとバスです。
-        </p>
+  
       </article>
     </section>
 
@@ -1048,11 +1047,9 @@
 
         renderStopMarkers();
 
-        dataStatus.textContent =
-          `${stops.length}件のバス停を読み込みました` +
-          `（${sourceName}）。`;
+	dataStatus.hidden = true;
 
-        renderResults();
+	renderResults();
       }
 
       function renderStopMarkers() {
