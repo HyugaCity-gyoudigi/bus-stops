@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>のるーと日向｜バス停検索</title>
 
   <link
@@ -16,11 +15,14 @@
       --primary: rgb(52, 141, 204);
       --primary-dark: rgb(31, 108, 165);
       --sub: #fff23f;
+      --pink: #ff6f91;
       --text: #17324a;
       --muted: #657b8d;
       --border: #d5eaf7;
       --background: #eff9ff;
       --card: #ffffff;
+      --noruto: #348dcc;
+      --nanbu: #ed8b00;
     }
 
     * {
@@ -72,7 +74,7 @@
     .site-header {
       position: relative;
       overflow: hidden;
-      color: #ffffff;
+      color: #fff;
       background:
         radial-gradient(
           circle at 88% 15%,
@@ -160,7 +162,7 @@
     .search-panel label {
       display: block;
       margin-bottom: 8px;
-      color: #ffffff;
+      color: #fff;
       font-size: 0.88rem;
       font-weight: 800;
     }
@@ -176,7 +178,7 @@
       min-height: 46px;
       padding: 9px 13px;
       color: var(--text);
-      background: #ffffff;
+      background: #fff;
       border: 2px solid transparent;
       border-radius: 12px;
       outline: none;
@@ -228,7 +230,6 @@
 
     .primary-button,
     .secondary-button,
-    .ghost-button,
     .small-button {
       display: inline-flex;
       align-items: center;
@@ -246,7 +247,6 @@
 
     .primary-button:hover,
     .secondary-button:hover,
-    .ghost-button:hover,
     .small-button:hover {
       transform: translateY(-2px);
     }
@@ -264,7 +264,7 @@
     }
 
     .secondary-button {
-      color: #ffffff;
+      color: #fff;
       background: var(--primary);
       border: 2px solid var(--primary);
       box-shadow: 0 5px 0 rgba(31, 108, 165, 0.32);
@@ -275,17 +275,11 @@
       box-shadow: 0 7px 0 rgba(31, 108, 165, 0.32);
     }
 
-    .ghost-button {
-      color: var(--primary-dark);
-      background: #ffffff;
-      border: 2px solid var(--primary);
-    }
-
     .small-button {
       min-height: 38px;
       padding: 7px 12px;
       color: var(--primary-dark);
-      background: #ffffff;
+      background: #fff;
       border: 2px solid var(--primary);
       font-size: 0.82rem;
     }
@@ -322,10 +316,6 @@
       margin: 0 auto;
     }
 
-    /*
-     * PC表示でもカードが横長になりすぎないように、
-     * カード自体を縦型にし、最大幅を指定しています。
-     */
     .result-card {
       display: flex;
       flex-direction: column;
@@ -335,7 +325,7 @@
       gap: 13px;
       margin: 0 auto;
       padding: 17px;
-      background: #ffffff;
+      background: #fff;
       border: 2px solid var(--border);
       border-radius: 17px;
       transition:
@@ -360,17 +350,52 @@
       min-width: 0;
     }
 
+    .result-title-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
     .result-name {
       display: block;
+      min-width: 0;
       color: var(--primary-dark);
       font-size: 1rem;
       font-weight: 800;
       overflow-wrap: anywhere;
     }
 
+    .service-badge {
+      display: inline-flex;
+      flex: 0 0 auto;
+      align-items: center;
+      min-height: 28px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      color: #fff;
+      font-size: 0.72rem;
+      font-weight: 800;
+      line-height: 1.2;
+      white-space: nowrap;
+    }
+
+    .service-badge.noruto {
+      background: var(--noruto);
+    }
+
+    .service-badge.nanbu {
+      color: #4b3500;
+      background: var(--sub);
+    }
+
+    .service-badge.other {
+      background: var(--pink);
+    }
+
     .result-distance {
       display: block;
-      margin-top: 5px;
+      margin-top: 7px;
       color: var(--muted);
       font-size: 0.84rem;
       font-weight: 700;
@@ -411,6 +436,38 @@
       text-align: center;
       border: 2px dashed #b8dced;
       border-radius: 14px;
+    }
+
+    .service-legend {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 0 0 14px;
+    }
+
+    .legend-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .legend-dot {
+      width: 12px;
+      height: 12px;
+      border: 2px solid #fff;
+      border-radius: 50%;
+      box-shadow: 0 0 0 1px rgba(23, 50, 74, 0.16);
+    }
+
+    .legend-dot.noruto {
+      background: var(--noruto);
+    }
+
+    .legend-dot.nanbu {
+      background: var(--sub);
     }
 
     .route-actions {
@@ -475,6 +532,12 @@
         width: 100%;
       }
 
+      .result-title-row {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 7px;
+      }
+
       .result-card {
         max-width: 100%;
       }
@@ -502,7 +565,7 @@
 <body>
   <header class="site-header">
     <div class="header-inner">
-      <p class="eyebrow">のるーと日向</p>
+      <p class="eyebrow">のるーと日向+南部ぷらっとバス</p>
 
       <h1>バス停を探す</h1>
 
@@ -594,6 +657,18 @@
       <article class="panel">
         <h2>バス停までの経路</h2>
 
+        <div class="service-legend">
+          <span class="legend-item">
+            <span class="legend-dot noruto"></span>
+            のるーと日向
+          </span>
+
+          <span class="legend-item">
+            <span class="legend-dot nanbu"></span>
+            南部ぷらっとバス
+          </span>
+        </div>
+
         <p
           id="routeStatus"
           class="route-status"
@@ -619,7 +694,7 @@
         <div id="routeMap"></div>
 
         <p class="map-note">
-          Leafletのルート線はOpenStreetMapの徒歩ルーティングサービスを利用しています。
+          青色のマーカーはのるーと日向、黄色のマーカーは南部ぷらっとバスです。
         </p>
       </article>
     </section>
@@ -636,7 +711,7 @@
         src="https://www.google.com/maps/d/embed?mid=1lJz03os8OTk6Ucij1uqEVZpjakXGWc0&ehbc=2E312F"
         width="640"
         height="480"
-        title="のるーと日向のバス停マップ"
+        title="のるーと日向と南部ぷらっとバスのバス停マップ"
         loading="lazy"
         allowfullscreen
       ></iframe>
@@ -662,7 +737,7 @@
         "&forcekml=1";
 
       const STORAGE_KEY =
-        "noruto-hyuga-stops-v4";
+        "noruto-hyuga-stops-v5";
 
       const MAX_RESULTS = 5;
 
@@ -670,8 +745,15 @@
         "https://routing.openstreetmap.de/routed-foot/route/v1/driving/";
 
       /*
-       * バス停データを直接埋め込む場合は、
-       * ここに実際の座標を追加できます。
+       * 直接データを埋め込む場合はここに追加できます。
+       *
+       * 例:
+       * {
+       *   name: "バス停名",
+       *   service: "南部ぷらっとバス",
+       *   lat: 32.000000,
+       *   lng: 131.000000
+       * }
        */
       const INITIAL_STOPS = [];
 
@@ -757,14 +839,8 @@
         );
       }
 
-      function stripHtml(value) {
-        const documentObject =
-          new DOMParser().parseFromString(
-            String(value ?? ""),
-            "text/html"
-          );
-
-        return (documentObject.body.textContent || "")
+      function cleanText(value) {
+        return String(value ?? "")
           .replace(/\s+/g, " ")
           .trim();
       }
@@ -818,6 +894,38 @@
         return earthRadius * c;
       }
 
+      function classifyService(value) {
+        const text =
+          cleanText(value).toLocaleLowerCase("ja-JP");
+
+        if (
+          text.includes("452068") ||
+          text.includes("noru") ||
+          text.includes("のるーと")
+        ) {
+          return {
+            name: "のるーと日向",
+            key: "noruto"
+          };
+        }
+
+        if (
+          text.includes("ぷらっと") ||
+          text.includes("プラット") ||
+          text === "バス停"
+        ) {
+          return {
+            name: "南部ぷらっとバス",
+            key: "nanbu"
+          };
+        }
+
+        return {
+          name: "その他",
+          key: "other"
+        };
+      }
+
       function normalizeStop(item, index) {
         if (!item || typeof item !== "object") {
           return null;
@@ -844,11 +952,24 @@
           return null;
         }
 
+        const service =
+          item.service ||
+          item.operator ||
+          item.category ||
+          "のるーと日向";
+
+        const serviceInfo =
+          typeof service === "object"
+            ? service
+            : classifyService(service);
+
         return {
           id: "",
           name:
-            stripHtml(item.name ?? item.title) ||
+            cleanText(item.name ?? item.title) ||
             `バス停 ${index + 1}`,
+          service: serviceInfo.name,
+          serviceKey: serviceInfo.key,
           lat,
           lng
         };
@@ -870,7 +991,11 @@
             return;
           }
 
+          /*
+           * 同じ名前・座標でも、サービスが違えば別のバス停として残します。
+           */
           const key = [
+            stop.serviceKey,
             stop.name,
             stop.lat.toFixed(6),
             stop.lng.toFixed(6)
@@ -891,7 +1016,7 @@
           .map((stop, index) => ({
             ...stop,
             id: [
-              "stop",
+              stop.serviceKey,
               index,
               stop.lat.toFixed(6),
               stop.lng.toFixed(6)
@@ -927,16 +1052,29 @@
         stopMarkers = new Map();
 
         stops.forEach((stop) => {
+          const markerColor =
+            stop.serviceKey === "nanbu"
+              ? "#ed8b00"
+              : stop.serviceKey === "noruto"
+                ? "#348dcc"
+                : "#ff6f91";
+
+          const fillColor =
+            stop.serviceKey === "nanbu"
+              ? "#fff23f"
+              : markerColor;
+
           const popupHtml =
-            `<strong>${escapeHtml(stop.name)}</strong>`;
+            `<strong>${escapeHtml(stop.service)}</strong>` +
+            `<br>${escapeHtml(stop.name)}`;
 
           const marker = L.circleMarker(
             [stop.lat, stop.lng],
             {
               radius: 7,
-              color: "#348dcc",
+              color: markerColor,
               weight: 3,
-              fillColor: "#fff23f",
+              fillColor,
               fillOpacity: 1
             }
           );
@@ -1085,12 +1223,30 @@
 
           info.className = "result-info";
 
+          const titleRow =
+            document.createElement("div");
+
+          titleRow.className =
+            "result-title-row";
+
           const name =
             document.createElement("span");
 
           name.className = "result-name";
           name.textContent =
             `${index + 1}. ${stop.name}`;
+
+          const serviceBadge =
+            document.createElement("span");
+
+          serviceBadge.className =
+            `service-badge ${stop.serviceKey}`;
+
+          serviceBadge.textContent =
+            stop.service;
+
+          titleRow.appendChild(name);
+          titleRow.appendChild(serviceBadge);
 
           const distance =
             document.createElement("span");
@@ -1112,19 +1268,21 @@
               "現在地を取得すると距離を表示します";
           }
 
-          info.appendChild(name);
+          info.appendChild(titleRow);
           info.appendChild(distance);
 
           const actions =
             document.createElement("div");
 
-          actions.className = "result-actions";
+          actions.className =
+            "result-actions";
 
           const selectButton =
             document.createElement("button");
 
           selectButton.type = "button";
-          selectButton.className = "small-button";
+          selectButton.className =
+            "small-button";
           selectButton.textContent =
             "地図で表示";
 
@@ -1138,7 +1296,8 @@
           const routeLink =
             document.createElement("a");
 
-          routeLink.className = "result-link";
+          routeLink.className =
+            "result-link";
           routeLink.target = "_blank";
           routeLink.rel =
             "noopener noreferrer";
@@ -1202,7 +1361,7 @@
 
         if (!currentPosition) {
           routeStatus.textContent =
-            `${stop.name}を地図上に表示しました。` +
+            `${stop.service}「${stop.name}」を地図上に表示しました。` +
             "現在地を取得すると徒歩ルートを表示できます。";
 
           cancelRoute();
@@ -1210,7 +1369,7 @@
         }
 
         routeStatus.textContent =
-          `${stop.name}までの徒歩ルートを取得中…`;
+          `${stop.service}「${stop.name}」までの徒歩ルートを取得中…`;
 
         drawRoute(stop);
       }
@@ -1350,7 +1509,7 @@
             );
 
           routeStatus.textContent =
-            `${stop.name}までの徒歩ルート：` +
+            `${stop.service}「${stop.name}」まで：` +
             `約${formatDistance(route.distance)}、` +
             `約${minutes}分`;
         } catch (error) {
@@ -1366,7 +1525,7 @@
           }
 
           routeStatus.textContent =
-            `${stop.name}までの道路ルートを取得できませんでした。` +
+            `${stop.service}「${stop.name}」までの道路ルートを取得できませんでした。` +
             "破線は直線距離です。Google Mapsで確認してください。";
 
           directLine.bringToFront();
@@ -1537,6 +1696,35 @@
           : "";
       }
 
+      function getPlacemarkService(placemark) {
+        let node =
+          placemark.parentNode;
+
+        while (node) {
+          if (
+            node.nodeType === 1 &&
+            node.localName === "Folder"
+          ) {
+            const folderName =
+              getFirstText(node, "name");
+
+            const classified =
+              classifyService(folderName);
+
+            if (classified.key !== "other") {
+              return classified;
+            }
+          }
+
+          node = node.parentNode;
+        }
+
+        const styleUrl =
+          getFirstText(placemark, "styleUrl");
+
+        return classifyService(styleUrl);
+      }
+
       function parseKml(kmlText) {
         const xml =
           new DOMParser().parseFromString(
@@ -1605,10 +1793,14 @@
             return;
           }
 
+          const service =
+            getPlacemarkService(placemark);
+
           parsedStops.push({
             name:
               getFirstText(placemark, "name") ||
               `バス停 ${index + 1}`,
+            service,
             lat,
             lng
           });
@@ -1714,7 +1906,7 @@
           },
           {
             url: "data/bus-stops.kml",
-            label: "data/bus-stops.kml",
+            label: "添付KML",
             parser: parseKml
           }
         ];
@@ -1754,10 +1946,6 @@
           }
         }
 
-        /*
-         * Google My MapsのKML URLも試します。
-         * Google側のCORS設定によっては取得できません。
-         */
         try {
           const text =
             await fetchText(
@@ -1774,7 +1962,7 @@
 
           return;
         } catch (error) {
-          // データがない場合は下記メッセージを表示します。
+          // Google側のCORSなどで取得できない場合があります。
         }
 
         dataStatus.textContent =
@@ -1794,7 +1982,7 @@
               ? "検索を閉じる"
               : "バス停名称で検索";
 
-          toggleSearchButton.setAttribute(
+          sechButton.setAttribute(
             "aria-expanded",
             String(willOpen)
           );
