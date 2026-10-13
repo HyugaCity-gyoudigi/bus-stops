@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>のるーと日向｜バス停検索</title>
+  <title>のるーと日向+南部ぷらっとバス｜バス停検索</title>
 
   <link
     rel="stylesheet"
@@ -633,6 +633,14 @@
   </header>
 
   <main class="container">
+    <div
+      id="dataStatus"
+      class="notice"
+      role="status"
+      aria-live="polite"
+    >
+      バス停データを読み込んでいます…
+    </div>
 
     <section class="content-grid">
       <article class="panel">
@@ -675,7 +683,7 @@
           role="status"
           aria-live="polite"
         >
-          バス停を選択すると、地図上に経路を表示します。
+          バス停を選択すると、Leaflet上に経路を表示します。
         </p>
 
         <div class="route-actions">
@@ -693,6 +701,9 @@
 
         <div id="routeMap"></div>
 
+        <p class="map-note">
+          青色のマーカーはのるーと日向、黄色のマーカーは南部ぷらっとバスです。
+        </p>
       </article>
     </section>
 
@@ -700,7 +711,7 @@
       <h2>のるーと日向+南部ぷらっとバス Googleマップ</h2>
 
       <p class="panel-description">
-        のるーと日向と南部ぷらっとバスのバス停をGoogleマップ上に表示しています。
+        のるーと日向と南部ぷらっとバスのバス停をGoogleマップで表示しています。
       </p>
 
       <iframe
@@ -1979,7 +1990,7 @@
               ? "検索を閉じる"
               : "バス停名称で検索";
 
-          sechButton.setAttribute(
+          toggleSearchButton.setAttribute(
             "aria-expanded",
             String(willOpen)
           );
