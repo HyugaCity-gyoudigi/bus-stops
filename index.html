@@ -13,13 +13,13 @@
 
   <style>
     :root {
-      --primary: #087f70;
-      --primary-dark: #056357;
-      --accent: #f59e0b;
-      --text: #1f2937;
-      --muted: #667085;
-      --border: #e5e7eb;
-      --background: #f4f7f8;
+      --primary: rgb(52, 141, 204);
+      --primary-dark: rgb(31, 108, 165);
+      --sub: #fff23f;
+      --text: #17324a;
+      --muted: #657b8d;
+      --border: #d5eaf7;
+      --background: #eff9ff;
       --card: #ffffff;
     }
 
@@ -34,7 +34,13 @@
     body {
       margin: 0;
       color: var(--text);
-      background: var(--background);
+      background:
+        radial-gradient(
+          circle at 5% 10%,
+          rgba(255, 242, 63, 0.22),
+          transparent 22%
+        ),
+        var(--background);
       font-family:
         -apple-system,
         BlinkMacSystemFont,
@@ -64,13 +70,31 @@
     }
 
     .site-header {
+      position: relative;
+      overflow: hidden;
       color: #ffffff;
       background:
+        radial-gradient(
+          circle at 88% 15%,
+          rgba(255, 242, 63, 0.7),
+          transparent 22%
+        ),
         linear-gradient(
           135deg,
-          rgba(0, 96, 84, 0.98),
-          rgba(8, 127, 112, 0.92)
+          rgb(52, 141, 204),
+          rgb(31, 108, 165)
         );
+    }
+
+    .site-header::after {
+      position: absolute;
+      right: -50px;
+      bottom: -85px;
+      width: 220px;
+      height: 220px;
+      content: "";
+      background: rgba(255, 242, 63, 0.22);
+      border-radius: 50%;
     }
 
     .header-inner,
@@ -80,15 +104,17 @@
     }
 
     .header-inner {
-      padding: 46px 0;
+      position: relative;
+      z-index: 1;
+      padding: 48px 0;
     }
 
     .eyebrow {
       margin: 0 0 8px;
+      color: var(--sub);
       font-size: 0.9rem;
-      font-weight: 700;
-      letter-spacing: 0.08em;
-      opacity: 0.85;
+      font-weight: 800;
+      letter-spacing: 0.1em;
     }
 
     h1,
@@ -101,39 +127,42 @@
       margin-bottom: 12px;
       font-size: clamp(2rem, 5vw, 3.3rem);
       line-height: 1.2;
+      letter-spacing: 0.02em;
     }
 
     h2 {
       margin-bottom: 8px;
+      color: var(--primary-dark);
       font-size: 1.3rem;
     }
 
     .lead {
       max-width: 720px;
       margin-bottom: 24px;
-      color: rgba(255, 255, 255, 0.9);
+      color: rgba(255, 255, 255, 0.94);
     }
 
     .header-actions {
       display: grid;
-      width: min(100%, 430px);
+      width: min(100%, 440px);
       gap: 10px;
     }
 
     .search-panel {
-      width: min(100%, 600px);
+      width: min(100%, 620px);
       margin-top: 14px;
       padding: 16px;
-      background: rgba(255, 255, 255, 0.14);
-      border: 1px solid rgba(255, 255, 255, 0.28);
-      border-radius: 14px;
+      background: rgba(255, 242, 63, 0.22);
+      border: 2px solid rgba(255, 242, 63, 0.85);
+      border-radius: 18px;
     }
 
     .search-panel label {
       display: block;
       margin-bottom: 8px;
+      color: #ffffff;
       font-size: 0.88rem;
-      font-weight: 700;
+      font-weight: 800;
     }
 
     .search-row {
@@ -144,18 +173,18 @@
     .search-row input {
       flex: 1;
       min-width: 0;
-      min-height: 44px;
-      padding: 9px 12px;
+      min-height: 46px;
+      padding: 9px 13px;
       color: var(--text);
       background: #ffffff;
-      border: 1px solid #cbd5e1;
-      border-radius: 9px;
+      border: 2px solid transparent;
+      border-radius: 12px;
       outline: none;
     }
 
     .search-row input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 3px rgba(8, 127, 112, 0.15);
+      border-color: var(--sub);
+      box-shadow: 0 0 0 3px rgba(255, 242, 63, 0.3);
     }
 
     .container {
@@ -166,9 +195,11 @@
       margin-bottom: 18px;
       padding: 24px;
       background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      box-shadow: 0 8px 24px rgba(16, 24, 40, 0.06);
+      border: 2px solid rgba(52, 141, 204, 0.13);
+      border-radius: 22px;
+      box-shadow:
+        0 12px 28px rgba(52, 141, 204, 0.12),
+        0 4px 0 rgba(255, 242, 63, 0.45);
     }
 
     .panel-description {
@@ -187,125 +218,142 @@
     .notice {
       margin-bottom: 18px;
       padding: 14px 16px;
-      color: #075e54;
-      background: #e6f6f2;
-      border: 1px solid #b7e6dc;
-      border-radius: 12px;
+      color: #245d83;
+      background: #fffbd0;
+      border: 2px solid var(--sub);
+      border-radius: 15px;
       font-size: 0.92rem;
+      font-weight: 600;
     }
 
     .primary-button,
     .secondary-button,
     .ghost-button,
-    .small-button,
-    .file-button {
+    .small-button {
       display: inline-flex;
       align-items: center;
       justify-content: center;
       min-height: 44px;
       padding: 10px 17px;
-      border-radius: 10px;
-      font-weight: 700;
+      border-radius: 13px;
+      font-weight: 800;
       text-decoration: none;
       transition:
         transform 0.15s ease,
+        box-shadow 0.15s ease,
         background 0.15s ease;
     }
 
     .primary-button:hover,
     .secondary-button:hover,
     .ghost-button:hover,
-    .small-button:hover,
-    .file-button:hover {
-      transform: translateY(-1px);
+    .small-button:hover {
+      transform: translateY(-2px);
     }
 
     .primary-button {
-      color: #ffffff;
-      background: var(--accent);
-      border: 1px solid var(--accent);
+      color: #17405c;
+      background: var(--sub);
+      border: 2px solid var(--sub);
+      box-shadow: 0 5px 0 rgba(155, 136, 0, 0.35);
     }
 
     .primary-button:hover {
-      background: #d97706;
+      background: #ffed18;
+      box-shadow: 0 7px 0 rgba(155, 136, 0, 0.35);
     }
 
     .secondary-button {
       color: #ffffff;
       background: var(--primary);
-      border: 1px solid var(--primary);
+      border: 2px solid var(--primary);
+      box-shadow: 0 5px 0 rgba(31, 108, 165, 0.32);
     }
 
     .secondary-button:hover {
       background: var(--primary-dark);
+      box-shadow: 0 7px 0 rgba(31, 108, 165, 0.32);
     }
 
     .ghost-button {
       color: var(--primary-dark);
       background: #ffffff;
-      border: 1px solid #a8d8cf;
+      border: 2px solid var(--primary);
     }
 
     .small-button {
       min-height: 38px;
-      padding: 7px 11px;
+      padding: 7px 12px;
       color: var(--primary-dark);
       background: #ffffff;
-      border: 1px solid #a8d8cf;
+      border: 2px solid var(--primary);
       font-size: 0.82rem;
     }
 
     .small-button:hover {
-      background: #e6f6f2;
-    }
-
-    .file-button {
-      color: #ffffff;
-      background: #475467;
-      border: 1px solid #475467;
-    }
-
-    .file-button input {
-      display: none;
+      color: #17405c;
+      background: var(--sub);
+      border-color: var(--sub);
     }
 
     .location-status,
     .route-status {
       min-height: 26px;
       margin: 14px 0 0;
-      color: rgba(255, 255, 255, 0.9);
       font-size: 0.9rem;
     }
 
     .route-status {
       color: var(--muted);
+      font-weight: 600;
     }
 
     .result-summary {
       margin: 0 0 12px;
       color: var(--muted);
       font-size: 0.9rem;
+      font-weight: 600;
     }
 
     .result-list {
       display: grid;
-      gap: 10px;
+      gap: 13px;
+      max-width: 600px;
+      margin: 0 auto;
     }
 
+    /*
+     * PC表示でもカードが横長になりすぎないように、
+     * カード自体を縦型にし、最大幅を指定しています。
+     */
     .result-card {
       display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 16px;
-      padding: 15px;
-      border: 1px solid var(--border);
-      border-radius: 12px;
+      flex-direction: column;
+      align-items: stretch;
+      width: 100%;
+      max-width: 560px;
+      gap: 13px;
+      margin: 0 auto;
+      padding: 17px;
       background: #ffffff;
+      border: 2px solid var(--border);
+      border-radius: 17px;
+      transition:
+        transform 0.15s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+    }
+
+    .result-card:hover {
+      transform: translateY(-2px);
+      border-color: var(--primary);
     }
 
     .result-card.selected {
-      background: #f0fbf8;
       border-color: var(--primary);
+      box-shadow:
+        0 0 0 3px rgba(52, 141, 204, 0.16),
+        0 7px 0 rgba(255, 242, 63, 0.86);
     }
 
     .result-info {
@@ -314,53 +362,46 @@
 
     .result-name {
       display: block;
-      overflow: hidden;
-      font-weight: 700;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .result-description {
-      display: block;
-      overflow: hidden;
-      color: var(--muted);
-      font-size: 0.82rem;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      color: var(--primary-dark);
+      font-size: 1rem;
+      font-weight: 800;
+      overflow-wrap: anywhere;
     }
 
     .result-distance {
       display: block;
-      margin-top: 3px;
-      color: var(--primary-dark);
+      margin-top: 5px;
+      color: var(--muted);
       font-size: 0.84rem;
       font-weight: 700;
     }
 
     .result-actions {
       display: flex;
-      flex: 0 0 auto;
       flex-wrap: wrap;
-      justify-content: flex-end;
+      justify-content: flex-start;
       gap: 8px;
     }
 
     .result-link {
       display: inline-flex;
       align-items: center;
+      justify-content: center;
       min-height: 38px;
-      padding: 7px 11px;
+      padding: 7px 12px;
       color: var(--primary-dark);
-      border: 1px solid #a8d8cf;
-      border-radius: 8px;
+      border: 2px solid var(--primary);
+      border-radius: 10px;
       font-size: 0.82rem;
-      font-weight: 700;
+      font-weight: 800;
       text-decoration: none;
       white-space: nowrap;
     }
 
     .result-link:hover {
-      background: #e6f6f2;
+      color: #17405c;
+      background: var(--sub);
+      border-color: var(--sub);
     }
 
     .empty-result {
@@ -368,8 +409,8 @@
       padding: 24px 12px;
       color: var(--muted);
       text-align: center;
-      border: 1px dashed #cbd5e1;
-      border-radius: 12px;
+      border: 2px dashed #b8dced;
+      border-radius: 14px;
     }
 
     .route-actions {
@@ -383,8 +424,8 @@
       height: 410px;
       margin-top: 16px;
       overflow: hidden;
-      border: 1px solid var(--border);
-      border-radius: 12px;
+      border: 3px solid rgba(52, 141, 204, 0.25);
+      border-radius: 16px;
     }
 
     .map-note {
@@ -397,21 +438,8 @@
       display: block;
       width: 100%;
       height: 480px;
-      border: 0;
-      border-radius: 12px;
-    }
-
-    .import-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .small-note {
-      margin: 0;
-      color: var(--muted);
-      font-size: 0.8rem;
+      border: 3px solid rgba(52, 141, 204, 0.2);
+      border-radius: 16px;
     }
 
     .footer {
@@ -448,18 +476,11 @@
       }
 
       .result-card {
-        align-items: stretch;
-        flex-direction: column;
-        gap: 12px;
-      }
-
-      .result-name,
-      .result-description {
-        white-space: normal;
+        max-width: 100%;
       }
 
       .result-actions {
-        justify-content: flex-start;
+        width: 100%;
       }
 
       .result-link,
@@ -473,15 +494,6 @@
 
       .mymaps-frame {
         height: 400px;
-      }
-
-      .import-row {
-        flex-direction: column;
-      }
-
-      .file-button,
-      .ghost-button {
-        width: 100%;
       }
     }
   </style>
@@ -616,7 +628,6 @@
 
         <p class="map-note">
           Leafletのルート線はOpenStreetMapの徒歩ルーティングサービスを利用しています。
-          取得できない場合はGoogle Mapsの経路ボタンを利用してください。
         </p>
       </article>
     </section>
@@ -625,7 +636,7 @@
       <h2>のるーと日向 Google My Maps</h2>
 
       <p class="panel-description">
-        指定されたGoogle My Mapsを表示しています。
+        Google My Mapsに登録されているバス停を表示しています。
       </p>
 
       <iframe
@@ -639,47 +650,12 @@
       ></iframe>
     </section>
 
-    <section class="panel">
-      <h2>バス停データ</h2>
-
-      <p class="panel-description">
-        Google My MapsからKMLまたはKMZをダウンロードして読み込めます。
-        読み込んだデータはこのブラウザに保存されます。
-      </p>
-
-      <div class="import-row">
-        <label class="file-button">
-          KML / KMZを選択
-          <input
-            id="kmlFile"
-            type="file"
-            accept=".kml,.kmz,application/vnd.google-earth.kml+xml,application/vnd.google-earth.kmz"
-          />
-        </label>
-
-        <button
-          id="clearButton"
-          class="ghost-button"
-          type="button"
-        >
-          保存データを削除
-        </button>
-      </div>
-
-      <p class="small-note">
-        自動読み込みを使う場合は、
-        <code>data/bus-stops.kml</code>
-        にKMLファイルを配置してください。
-      </p>
-    </section>
-
     <p class="footer">
       のるーと日向 バス停検索
     </p>
   </main>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
 
   <script>
     (() => {
@@ -694,7 +670,7 @@
         "&forcekml=1";
 
       const STORAGE_KEY =
-        "noruto-hyuga-stops-v3";
+        "noruto-hyuga-stops-v4";
 
       const MAX_RESULTS = 5;
 
@@ -702,15 +678,8 @@
         "https://routing.openstreetmap.de/routed-foot/route/v1/driving/";
 
       /*
-       * 座標を直接埋め込む場合は、ここに追加できます。
-       *
-       * 例:
-       * {
-       *   name: "バス停名",
-       *   description: "",
-       *   lat: 32.000000,
-       *   lng: 131.000000
-       * }
+       * バス停データを直接埋め込む場合は、
+       * ここに実際の座標を追加できます。
        */
       const INITIAL_STOPS = [];
 
@@ -747,12 +716,6 @@
       const googleDirections =
         document.querySelector("#googleDirections");
 
-      const kmlFile =
-        document.querySelector("#kmlFile");
-
-      const clearButton =
-        document.querySelector("#clearButton");
-
       let leafletMap;
       let stopLayer;
       let routeLayer;
@@ -785,6 +748,21 @@
 
         routeLayer =
           L.layerGroup().addTo(leafletMap);
+      }
+
+      function escapeHtml(value) {
+        const entities = {
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#039;"
+        };
+
+        return String(value ?? "").replace(
+          /[&<>"']/g,
+          (character) => entities[character]
+        );
       }
 
       function stripHtml(value) {
@@ -879,11 +857,6 @@
           name:
             stripHtml(item.name ?? item.title) ||
             `バス停 ${index + 1}`,
-          description: stripHtml(
-            item.description ??
-            item.address ??
-            ""
-          ),
           lat,
           lng
         };
@@ -963,21 +936,16 @@
 
         stops.forEach((stop) => {
           const popupHtml =
-            `<strong>${escapeHtml(stop.name)}</strong>` +
-            (
-              stop.description
-                ? `<br>${escapeHtml(stop.description)}`
-                : ""
-            );
+            `<strong>${escapeHtml(stop.name)}</strong>`;
 
           const marker = L.circleMarker(
             [stop.lat, stop.lng],
             {
-              radius: 6,
-              color: "#087f70",
-              weight: 2,
-              fillColor: "#40b79f",
-              fillOpacity: 0.9
+              radius: 7,
+              color: "#348dcc",
+              weight: 3,
+              fillColor: "#fff23f",
+              fillOpacity: 1
             }
           );
 
@@ -1008,21 +976,6 @@
         }
       }
 
-      function escapeHtml(value) {
-        const entities = {
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#039;"
-        };
-
-        return String(value ?? "").replace(
-          /[&<>"']/g,
-          (character) => entities[character]
-        );
-      }
-
       function getSearchResults() {
         const query =
           stopSearch.value
@@ -1034,14 +987,9 @@
             return true;
           }
 
-          const searchableText = [
-            stop.name,
-            stop.description
-          ]
-            .join(" ")
-            .toLocaleLowerCase("ja-JP");
-
-          return searchableText.includes(query);
+          return stop.name
+            .toLocaleLowerCase("ja-JP")
+            .includes(query);
         });
 
         if (currentPosition) {
@@ -1152,15 +1100,6 @@
           name.textContent =
             `${index + 1}. ${stop.name}`;
 
-          const description =
-            document.createElement("span");
-
-          description.className =
-            "result-description";
-
-          description.textContent =
-            stop.description || "バス停";
-
           const distance =
             document.createElement("span");
 
@@ -1182,7 +1121,6 @@
           }
 
           info.appendChild(name);
-          info.appendChild(description);
           info.appendChild(distance);
 
           const actions =
@@ -1196,7 +1134,7 @@
           selectButton.type = "button";
           selectButton.className = "small-button";
           selectButton.textContent =
-            "Leafletで表示";
+            "地図で表示";
 
           selectButton.addEventListener(
             "click",
@@ -1229,6 +1167,20 @@
         });
       }
 
+      function scrollToLeafletMap() {
+        const routeMap =
+          document.querySelector("#routeMap");
+
+        routeMap.scrollIntoView({
+          behavior: "smooth",
+          block: "center"
+        });
+
+        setTimeout(() => {
+          leafletMap.invalidateSize();
+        }, 400);
+      }
+
       function selectStop(stop) {
         selectedStop = stop;
 
@@ -1253,20 +1205,21 @@
             ? "Google Mapsで徒歩経路を開く"
             : "Google Mapsでバス停を開く";
 
+        scrollToLeafletMap();
+        renderResults();
+
         if (!currentPosition) {
           routeStatus.textContent =
-            `${stop.name}を選択しました。` +
+            `${stop.name}を地図上に表示しました。` +
             "現在地を取得すると徒歩ルートを表示できます。";
 
           cancelRoute();
-          renderResults();
           return;
         }
 
         routeStatus.textContent =
           `${stop.name}までの徒歩ルートを取得中…`;
 
-        renderResults();
         drawRoute(stop);
       }
 
@@ -1306,10 +1259,10 @@
           L.polyline(
             [start, end],
             {
-              color: "#94a3b8",
-              weight: 3,
-              dashArray: "7 8",
-              opacity: 0.9
+              color: "#9dbbd0",
+              weight: 4,
+              dashArray: "8 8",
+              opacity: 0.95
             }
           ).addTo(routeLayer);
 
@@ -1377,9 +1330,9 @@
               route.geometry,
               {
                 style: {
-                  color: "#087f70",
-                  weight: 6,
-                  opacity: 0.9
+                  color: "#348dcc",
+                  weight: 7,
+                  opacity: 0.95
                 }
               }
             ).addTo(routeLayer);
@@ -1451,11 +1404,11 @@
               currentPosition.lng
             ],
             {
-              radius: 9,
-              color: "#b42318",
+              radius: 10,
+              color: "#e33d70",
               weight: 3,
-              fillColor: "#f04438",
-              fillOpacity: 0.95
+              fillColor: "#fff23f",
+              fillOpacity: 1
             }
           )
             .bindPopup("現在地")
@@ -1473,7 +1426,7 @@
       function findNearbyStops() {
         if (stops.length === 0) {
           locationStatus.textContent =
-            "バス停データがありません。KML/KMZを読み込んでください。";
+            "バス停データがありません。data/bus-stops.kmlを配置してください。";
           return;
         }
 
@@ -1664,12 +1617,6 @@
             name:
               getFirstText(placemark, "name") ||
               `バス停 ${index + 1}`,
-            description: stripHtml(
-              getFirstText(
-                placemark,
-                "description"
-              )
-            ),
             lat,
             lng
           });
@@ -1698,46 +1645,6 @@
         throw new Error(
           "JSONの形式が正しくありません。"
         );
-      }
-
-      async function readKmlOrKmz(file) {
-        const fileName =
-          file.name.toLowerCase();
-
-        if (!fileName.endsWith(".kmz")) {
-          return await file.text();
-        }
-
-        if (!window.JSZip) {
-          throw new Error(
-            "KMZを解凍できませんでした。"
-          );
-        }
-
-        const zip =
-          await window.JSZip.loadAsync(file);
-
-        let entry = zip.file("doc.kml");
-
-        if (!entry) {
-          const kmlName =
-            Object.keys(zip.files).find(
-              (name) =>
-                name.toLowerCase().endsWith(".kml")
-            );
-
-          if (kmlName) {
-            entry = zip.file(kmlName);
-          }
-        }
-
-        if (!entry) {
-          throw new Error(
-            "KMZ内にKMLファイルがありません。"
-          );
-        }
-
-        return await entry.async("text");
       }
 
       async function fetchText(
@@ -1846,7 +1753,7 @@
           try {
             setStops(
               savedStops,
-              "このブラウザに保存されたデータ"
+              "保存されたデータ"
             );
 
             return;
@@ -1856,7 +1763,7 @@
         }
 
         /*
-         * Google My MapsのKML URLを試します。
+         * Google My MapsのKML URLも試します。
          * Google側のCORS設定によっては取得できません。
          */
         try {
@@ -1875,11 +1782,11 @@
 
           return;
         } catch (error) {
-          // ファイル選択による読み込みを利用します。
+          // データがない場合は下記メッセージを表示します。
         }
 
         dataStatus.textContent =
-          "バス停データがありません。Google My MapsからKML/KMZを読み込んでください。";
+          "バス停データがありません。data/bus-stops.kmlを配置してください。";
       }
 
       toggleSearchButton.addEventListener(
@@ -1913,14 +1820,13 @@
         "submit",
         (event) => {
           event.preventDefault();
+
           renderResults();
 
-          document
-            .querySelector("#resultList")
-            .scrollIntoView({
-              behavior: "smooth",
-              block: "start"
-            });
+          resultList.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+          });
         }
       );
 
@@ -1934,81 +1840,6 @@
       nearbyButton.addEventListener(
         "click",
         findNearbyStops
-      );
-
-      kmlFile.addEventListener(
-        "change",
-        async (event) => {
-          const file =
-            event.target.files?.[0];
-
-          if (!file) {
-            return;
-          }
-
-          dataStatus.textContent =
-            `${file.name}を読み込んでいます…`;
-
-          try {
-            const kmlText =
-              await readKmlOrKmz(file);
-
-            const rawStops =
-              parseKml(kmlText);
-
-            setStops(
-              rawStops,
-              `ファイル：${file.name}`
-            );
-          } catch (error) {
-            console.error(error);
-
-            dataStatus.textContent =
-              "KML/KMZを読み込めませんでした。バス停がポイント形式で登録されているか確認してください。";
-          } finally {
-            event.target.value = "";
-          }
-        }
-      );
-
-      clearButton.addEventListener(
-        "click",
-        () => {
-          localStorage.removeItem(
-            STORAGE_KEY
-          );
-
-          cancelRoute();
-
-          stops = [];
-          selectedStop = null;
-          currentPosition = null;
-
-          stopLayer.clearLayers();
-
-          if (currentMarker) {
-            currentMarker.remove();
-            currentMarker = null;
-          }
-
-          leafletMap.setView(
-            [32.425, 131.62],
-            13
-          );
-
-          googleDirections.hidden = true;
-          googleDirections.removeAttribute(
-            "href"
-          );
-
-          routeStatus.textContent =
-            "バス停を選択すると、Leaflet上に経路を表示します。";
-
-          renderResults();
-
-          dataStatus.textContent =
-            "保存されていたバス停データを削除しました。";
-        }
       );
 
       initializeLeaflet();
