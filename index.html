@@ -126,16 +126,6 @@
       min-width: 0;
     }
 
-    .header-visual {
-      position: absolute;
-      z-index: 0;
-      top: -20px;
-      right: -10px;
-      width: min(28vw, 300px);
-      pointer-events: none;
-    }
-
-    .header-visual img,
     .header-city-illustration img {
       display: block;
       width: 100%;
@@ -201,11 +191,6 @@
       border-radius: 18px;
     }
 
-    .destination-panel {
-      background: rgba(255, 255, 255, 0.14);
-      border-color: rgba(255, 255, 255, 0.85);
-    }
-
     .search-panel label {
       display: block;
       margin-bottom: 8px;
@@ -246,9 +231,6 @@
       background: var(--card);
       border: 2px solid rgba(52, 141, 204, 0.13);
       border-radius: 22px;
-      box-shadow:
-        0 12px 28px rgba(52, 141, 204, 0.12),
-        0 4px 0 rgba(255, 242, 63, 0.45);
     }
 
     .panel-description {
@@ -322,7 +304,6 @@
       box-shadow: 0 7px 0 rgba(31, 108, 165, 0.32);
     }
 
-
     .search-toggle-button {
       color: #fff;
       background: var(--search-orange);
@@ -335,38 +316,6 @@
       background: var(--search-orange-dark);
       border-color: var(--search-orange-dark);
       box-shadow: 0 7px 0 rgba(139, 62, 0, 0.38);
-    }
-
-    .destination-toggle-button {
-      color: var(--primary-dark);
-      background: #fff;
-      border-color: #fff;
-      box-shadow: 0 5px 0 rgba(11, 65, 103, 0.28);
-    }
-
-    .destination-toggle-button:hover {
-      color: #17405c;
-      background: #fffbd0;
-      border-color: #fffbd0;
-      box-shadow: 0 7px 0 rgba(11, 65, 103, 0.28);
-    }
-
-    .destination-status {
-      min-height: 24px;
-      margin: 10px 0 0;
-      color: #fff;
-      font-size: 0.85rem;
-      font-weight: 700;
-    }
-
-    .geocoder-note {
-      margin: 4px 0 0;
-      color: rgba(255, 255, 255, 0.86);
-      font-size: 0.72rem;
-    }
-
-    .geocoder-note a {
-      color: inherit;
     }
 
     .small-button {
@@ -599,7 +548,6 @@
       text-align: center;
     }
 
-
     .booking-widget {
       position: fixed;
       right: 18px;
@@ -703,13 +651,6 @@
         display: block;
       }
 
-      .header-visual {
-        top: -8px;
-        right: -32px;
-        width: min(40vw, 170px);
-        margin: 0;
-      }
-
       .header-city-illustration {
         right: -34px;
         width: min(58vw, 270px);
@@ -787,7 +728,7 @@
           <h1>バス停を探す</h1>
 
           <p class="lead">
-            現在地や目的地から近いバス停を探したり、バス停名称で検索したりできます。
+            現在地から近いバス停を探したり、バス停名称で検索したりできます。
           </p>
 
           <div class="header-actions">
@@ -800,23 +741,13 @@
             </button>
 
             <button
-              id="toggleDestinationButton"
-              class="secondary-button destination-toggle-button"
-              type="button"
-              aria-expanded="false"
-              aria-controls="destinationPanel"
-            >
-              目的地から近いバス停を探す
-            </button>
-
-            <button
               id="toggleSearchButton"
               class="secondary-button search-toggle-button"
               type="button"
               aria-expanded="false"
               aria-controls="searchPanel"
             >
-              バス停で検索
+              バス停を検索
             </button>
           </div>
 
@@ -848,54 +779,6 @@
             </form>
           </div>
 
-          <div
-            id="destinationPanel"
-            class="search-panel destination-panel"
-            hidden
-          >
-            <form id="destinationForm">
-              <label for="destinationSearch">
-                店舗名・施設名・住所を入力してください
-              </label>
-
-              <div class="search-row">
-                <input
-                  id="destinationSearch"
-                  type="search"
-                  placeholder="例：イオン日向店、日向市役所"
-                  autocomplete="off"
-                  required
-                />
-
-                <button
-                  id="destinationSubmitButton"
-                  class="primary-button"
-                  type="submit"
-                >
-                  近いバス停を検索
-                </button>
-              </div>
-
-              <p
-                id="destinationStatus"
-                class="destination-status"
-                role="status"
-                aria-live="polite"
-              ></p>
-
-              <p class="geocoder-note">
-                目的地検索：
-                <a
-                  href="https://www.openstreetmap.org/copyright"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  © OpenStreetMap contributors
-                </a>
-              </p>
-            </form>
-          </div>
-
           <p
             id="locationStatus"
             class="location-status"
@@ -904,15 +787,6 @@
           >
             現在地を使う場合はボタンを押してください。
           </p>
-        </div>
-
-        <div class="header-visual">
-          <img
-            src="images/ILLUSTRATION_A-2.png"
-            alt="バスを利用する人々のイラスト"
-            width="4222"
-            height="2941"
-          />
         </div>
       </div>
     </div>
@@ -946,7 +820,6 @@
           class="result-summary"
           aria-live="polite"
         ></p>
-
 
         <div
           id="resultList"
@@ -991,7 +864,7 @@
             rel="noopener noreferrer"
             hidden
           >
-            Google Mapsで徒歩経路を開く
+            Google マップで徒歩経路を開く
           </a>
         </div>
 
@@ -1002,10 +875,10 @@
     </section>
 
     <section class="panel">
-      <h2>のるーと日向+南部ぷらっとバス Googleマップ</h2>
+      <h2>のるーと日向+南部ぷらっとバス Google マップ</h2>
 
       <p class="panel-description">
-        のるーと日向と南部ぷらっとバスのバス停をGoogleマップで表示しています。
+        のるーと日向と南部ぷらっとバスのバス停をGoogle マップで表示しています。
       </p>
 
       <iframe
@@ -1023,7 +896,6 @@
       のるーと日向+南部ぷらっとバス バス停検索
     </p>
   </main>
-
 
   <div class="booking-widget">
     <div
@@ -1117,26 +989,8 @@
       const searchPanel =
         document.querySelector("#searchPanel");
 
-      const toggleDestinationButton =
-        document.querySelector("#toggleDestinationButton");
-
-      const destinationPanel =
-        document.querySelector("#destinationPanel");
-
       const searchForm =
         document.querySelector("#searchForm");
-
-      const destinationForm =
-        document.querySelector("#destinationForm");
-
-      const destinationSearch =
-        document.querySelector("#destinationSearch");
-
-      const destinationSubmitButton =
-        document.querySelector("#destinationSubmitButton");
-
-      const destinationStatus =
-        document.querySelector("#destinationStatus");
 
       const stopSearch =
         document.querySelector("#stopSearch");
@@ -1683,7 +1537,7 @@
           routeLink.textContent =
             currentPosition
               ? "徒歩経路"
-              : "Google Mapsで表示";
+              : "Google マップ";
 
           actions.appendChild(selectButton);
           actions.appendChild(routeLink);
@@ -1730,8 +1584,8 @@
         googleDirections.hidden = false;
         googleDirections.textContent =
           currentPosition
-            ? "Google Mapsで徒歩経路を開く"
-            : "Google Mapsでバス停を開く";
+            ? "Google マップで徒歩経路を開く"
+            : "Google マップでバス停を開く";
 
         scrollToLeafletMap();
         renderResults();
@@ -1903,7 +1757,7 @@
 
           routeStatus.textContent =
             `${stop.service}「${stop.name}」までの道路ルートを取得できませんでした。` +
-            "破線は直線距離です。Google Mapsで確認してください。";
+            "破線は直線距離です。Google マップで確認してください。";
 
           directLine.bringToFront();
         } finally {
@@ -1918,8 +1772,7 @@
       function showReferencePosition(
         point,
         label,
-        popupText,
-        isDestination = false
+        popupText
       ) {
         currentPosition = {
           lat: Number(point.lat),
@@ -1940,13 +1793,9 @@
             ],
             {
               radius: 10,
-              color: isDestination
-                ? "#a83f00"
-                : "#e33d70",
+              color: "#e33d70",
               weight: 3,
-              fillColor: isDestination
-                ? "#c84f00"
-                : "#fff23f",
+              fillColor: "#fff23f",
               fillOpacity: 1
             }
           )
@@ -2002,7 +1851,6 @@
               "現在地から近いバス停を探す";
 
             stopSearch.value = "";
-            destinationStatus.textContent = "";
 
             showCurrentPosition(position);
 
@@ -2064,214 +1912,6 @@
             maximumAge: 30000
           }
         );
-      }
-
-
-      function getDestinationViewbox() {
-        if (stops.length === 0) {
-          return null;
-        }
-
-        const latitudes =
-          stops.map((stop) => stop.lat);
-
-        const longitudes =
-          stops.map((stop) => stop.lng);
-
-        const minLat = Math.min(...latitudes);
-        const maxLat = Math.max(...latitudes);
-        const minLng = Math.min(...longitudes);
-        const maxLng = Math.max(...longitudes);
-
-        const latPadding =
-          Math.max(0.035, (maxLat - minLat) * 0.3);
-
-        const lngPadding =
-          Math.max(0.035, (maxLng - minLng) * 0.3);
-
-        return [
-          minLng - lngPadding,
-          maxLat + latPadding,
-          maxLng + lngPadding,
-          minLat - latPadding
-        ].join(",");
-      }
-
-      async function requestDestinationCandidates(
-        query,
-        bounded
-      ) {
-        const params =
-          new URLSearchParams({
-            format: "jsonv2",
-            q: query,
-            countrycodes: "jp",
-            limit: "5",
-            "accept-language": "ja"
-          });
-
-        const viewbox =
-          getDestinationViewbox();
-
-        if (viewbox) {
-          params.set("viewbox", viewbox);
-
-          if (bounded) {
-            params.set("bounded", "1");
-          }
-        }
-
-        const controller =
-          new AbortController();
-
-        const timeoutId =
-          setTimeout(() => {
-            controller.abort();
-          }, 10000);
-
-        try {
-          const response =
-            await fetch(
-              "https://nominatim.openstreetmap.org/search?" +
-              params.toString(),
-              {
-                signal: controller.signal
-              }
-            );
-
-          if (!response.ok) {
-            throw new Error(
-              "目的地検索サービスの応答エラー"
-            );
-          }
-
-          const data =
-            await response.json();
-
-          return Array.isArray(data)
-            ? data
-            : [];
-        } finally {
-          clearTimeout(timeoutId);
-        }
-      }
-
-      async function findStopsNearDestination(
-        query
-      ) {
-        if (stops.length === 0) {
-          throw new Error(
-            "バス停データの読み込み後に検索してください。"
-          );
-        }
-
-        let candidates =
-          await requestDestinationCandidates(
-            query,
-            true
-          );
-
-        if (candidates.length === 0) {
-          candidates =
-            await requestDestinationCandidates(
-              `${query} 宮崎県日向市`,
-              false
-            );
-        }
-
-        const validCandidates =
-          candidates
-            .map((candidate) => {
-              const lat = Number(candidate.lat);
-              const lng = Number(candidate.lon);
-
-              if (
-                !Number.isFinite(lat) ||
-                !Number.isFinite(lng)
-              ) {
-                return null;
-              }
-
-              const point = {
-                lat,
-                lng
-              };
-
-              const distanceToNetwork =
-                Math.min(
-                  ...stops.map((stop) =>
-                    distanceMeters(point, stop)
-                  )
-                );
-
-              return {
-                point,
-                displayName:
-                  cleanText(candidate.display_name),
-                distanceToNetwork
-              };
-            })
-            .filter(Boolean)
-            .sort(
-              (a, b) =>
-                a.distanceToNetwork -
-                b.distanceToNetwork
-            );
-
-        const destination =
-          validCandidates[0];
-
-        if (
-          !destination ||
-          destination.distanceToNetwork > 80000
-        ) {
-          throw new Error(
-            "目的地が見つかりませんでした。店舗名・施設名・住所を変えてお試しください。"
-          );
-        }
-
-        const point =
-          destination.point;
-
-        const nearestStops =
-          stops
-            .map((stop) => ({
-              stop,
-              distance:
-                distanceMeters(point, stop)
-            }))
-            .sort(
-              (a, b) =>
-                a.distance - b.distance
-            );
-
-        if (nearestStops.length === 0) {
-          throw new Error(
-            "目的地に近いバス停が見つかりませんでした。"
-          );
-        }
-
-        stopSearch.value = "";
-
-        const destinationName =
-          destination.displayName ||
-          query;
-
-        showReferencePosition(
-          point,
-          `目的地「${query}」`,
-          destinationName,
-          true
-        );
-
-        locationStatus.textContent =
-          `目的地「${query}」から最も近いバス停を表示しています。`;
-
-        destinationStatus.textContent =
-          `検索地点：${destinationName}`;
-
-        renderResults();
-        selectStop(nearestStops[0].stop);
       }
 
       function getElementsByLocalName(node, name) {
@@ -2579,39 +2219,18 @@
           "バス停データがありません。data/bus-stops.kmlを配置してください。";
       }
 
-      function closeStopSearchPanel() {
-        searchPanel.hidden = true;
-        toggleSearchButton.textContent =
-          "バス停で検索";
-        toggleSearchButton.setAttribute(
-          "aria-expanded",
-          "false"
-        );
-      }
-
-      function closeDestinationPanel() {
-        destinationPanel.hidden = true;
-        toggleDestinationButton.textContent =
-          "目的地から近いバス停を探す";
-        toggleDestinationButton.setAttribute(
-          "aria-expanded",
-          "false"
-        );
-      }
-
       toggleSearchButton.addEventListener(
         "click",
         () => {
           const willOpen =
             searchPanel.hidden;
 
-          closeDestinationPanel();
           searchPanel.hidden = !willOpen;
 
           toggleSearchButton.textContent =
             willOpen
               ? "検索を閉じる"
-              : "バス停で検索";
+              : "バス停を検索";
 
           toggleSearchButton.setAttribute(
             "aria-expanded",
@@ -2627,31 +2246,6 @@
         }
       );
 
-      toggleDestinationButton.addEventListener(
-        "click",
-        () => {
-          const willOpen =
-            destinationPanel.hidden;
-
-          closeStopSearchPanel();
-          destinationPanel.hidden = !willOpen;
-
-          toggleDestinationButton.textContent =
-            willOpen
-              ? "目的地検索を閉じる"
-              : "目的地から近いバス停を探す";
-
-          toggleDestinationButton.setAttribute(
-            "aria-expanded",
-            String(willOpen)
-          );
-
-          if (willOpen) {
-            destinationSearch.focus();
-          }
-        }
-      );
-
       searchForm.addEventListener(
         "submit",
         (event) => {
@@ -2663,45 +2257,6 @@
             behavior: "smooth",
             block: "start"
           });
-        }
-      );
-
-      destinationForm.addEventListener(
-        "submit",
-        async (event) => {
-          event.preventDefault();
-
-          const query =
-            destinationSearch.value.trim();
-
-          if (!query) {
-            destinationStatus.textContent =
-              "店舗名・施設名・住所を入力してください。";
-            destinationSearch.focus();
-            return;
-          }
-
-          destinationSubmitButton.disabled = true;
-          destinationSubmitButton.textContent =
-            "検索中…";
-          destinationStatus.textContent =
-            "目的地を検索しています…";
-
-          try {
-            await findStopsNearDestination(query);
-          } catch (error) {
-            destinationStatus.textContent =
-              error.name === "AbortError"
-                ? "目的地検索がタイムアウトしました。もう一度お試しください。"
-                : (
-                    error.message ||
-                    "目的地を検索できませんでした。"
-                  );
-          } finally {
-            destinationSubmitButton.disabled = false;
-            destinationSubmitButton.textContent =
-              "近いバス停を検索";
-          }
         }
       );
 
